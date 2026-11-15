@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BOB Mortgage Documentation Generator – V5.3 Source-Controlled RC13</title>
+<style>
+:root{--b:#b21f2d;--ink:#20242a;--muted:#667085;--line:#d8dde6;--bg:#f5f7fa;--card:#fff}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--bg)}
+header{background:#fff;border-bottom:4px solid var(--b);padding:18px 24px;display:flex;justify-content:space-between;align-items:center}
+h1{font-size:23px;margin:0}.sub{color:var(--muted);margin-top:5px}.badge{background:#fbeaec;color:#8f1723;padding:7px 11px;border-radius:16px;font-weight:700}
+.notice{padding:10px 24px;background:#fff8e8;border-bottom:1px solid #ead6a0;font-size:13px}
+main{max-width:1180px;margin:18px auto;padding:0 14px}.card{background:#fff;border:1px solid var(--line);border-radius:10px;margin:14px 0;padding:16px;box-shadow:0 1px 3px #0000000d}
+.title{font-family:Arial,Helvetica,sans-serif;font-size:12pt;font-weight:700;text-align:center;line-height:1.15;margin:6pt 0}.schedule{font-weight:700;text-align:center;margin-top:24pt;margin-bottom:12pt;font-size:12pt}.scheduleDetails{margin-top:10pt;margin-bottom:12pt}.grid{display:grid;gap:12px}.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.full{grid-column:1/-1}label{display:block;font-size:12px;font-weight:700;margin-bottom:5px}input,select,textarea{width:100%;padding:9px;border:1px solid #bfc7d2;border-radius:6px;font:inherit;background:#fff}textarea{resize:vertical}
+button,.btn{border:0;border-radius:6px;padding:9px 13px;font-weight:700;cursor:pointer;margin:4px 4px 4px 0}.primary{background:var(--b);color:white}.secondary{background:#e9edf3;color:#20242a}.danger{background:#8b1d25;color:#fff}
+.row{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr auto;gap:8px;align-items:end;margin:8px 0;padding:10px;background:#fafbfc;border:1px solid #e5e8ed;border-radius:7px}
+.frow{display:grid;grid-template-columns:1.5fr 1fr 1fr auto;gap:8px;align-items:end;margin:8px 0}.actions{margin-top:12px;display:flex;flex-wrap:wrap}.help{font-size:12px;color:var(--muted);margin:5px 0 10px}
+.aggregate{margin-top:10px;text-align:right;font-weight:700}.checklist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.doccard{border:1px solid var(--line);border-radius:8px;padding:10px;background:#fafbfc}.doccard strong{display:block}.tag{display:inline-block;font-size:11px;background:#eef2f6;padding:3px 6px;border-radius:10px;margin-top:5px}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
+#previewModal{display:none;position:fixed;inset:0;background:#0008;z-index:99;padding:20px;overflow:auto}.modalbox{max-width:900px;margin:auto;background:white;border-radius:8px;padding:12px}.modalbar{display:flex;justify-content:flex-end;gap:6px;position:sticky;top:0;background:white;padding:8px;z-index:2}
+.paper{font-family:Arial,Helvetica,sans-serif;font-size:11pt;line-height:1.15;color:#000;background:#fff;padding:0.55in;min-height:11in}.paper h1,.paper h2,.paper h3,.paper h4{font-family:Arial,Helvetica,sans-serif;font-size:12pt;line-height:1.15;font-weight:700;text-align:center;margin:6pt 0}.paper p,.paper li{font-family:Arial,Helvetica,sans-serif;font-size:11pt;line-height:1.15;text-align:justify;margin-top:0;margin-bottom:6pt}.paper table{width:100%;border-collapse:collapse;margin:10pt 0;font-family:Arial,Helvetica,sans-serif;font-size:11pt;line-height:1.15}.paper th,.paper td{border:1px solid #000;padding:6pt;vertical-align:top;font-family:Arial,Helvetica,sans-serif;font-size:11pt;line-height:1.15}.paper .noborder td{border:0}.paper .photoCell{width:35mm!important;min-width:35mm!important;max-width:35mm!important;height:45mm!important;min-height:45mm!important;padding:0!important;vertical-align:middle!important}.paper .staffPhotoCell{height:auto!important;min-height:0!important;width:35mm!important;min-width:35mm!important;max-width:35mm!important;padding:6pt!important}.paper .photoCol{width:35mm!important;min-width:35mm!important;max-width:35mm!important}.paper .signatureCol{width:38%!important;min-width:38%!important}.paper .sigbox{min-height:65px;min-width:190px;vertical-align:middle!important}.paper .signatureCell{height:65px!important;min-height:65px!important;vertical-align:middle!important}.paper .schedule{font-weight:700;text-align:center;margin-top:24pt;margin-bottom:12pt;font-size:12pt}.paper .scheduleDetails{margin-top:10pt;margin-bottom:12pt}.paper .sectionGap{margin-top:16pt}.paper .facilityWords{font-size:10.5pt}.paper .facilityLimitTable{width:100%;border-collapse:collapse;margin:10pt 0}.paper .facilityLimitTable th,.paper .facilityLimitTable td{border:1px solid #000;padding:6pt;vertical-align:top}.paper .facilityLimitTable th{text-align:left}.paper .officerExec{margin-top:30pt;display:flex;justify-content:space-between;gap:60pt}.paper .officerExec>div{width:45%;text-align:center}.paper .annexBoundary{margin-top:10pt!important;margin-bottom:18pt!important;break-inside:avoid;page-break-inside:avoid}.paper .legalNoteAfterExecution{clear:both;margin-top:36pt!important;padding-top:4pt;break-inside:avoid;page-break-inside:avoid}.paper .pagebreak{break-before:page;page-break-before:always}.paper .sig{margin-top:35pt;display:flex;justify-content:space-between;font-family:Arial,Helvetica,sans-serif;font-size:11pt;line-height:1.15}.metadataHeaderBlock{text-align:right;float:right;margin-bottom:20px;width:100%;box-sizing:border-box}.metadataLine{text-align:right;margin:0;padding:0}.clearBeforeSalutation{clear:both;width:100%;height:0}.documentCode,.documentTitle,.documentTitleCenter{clear:both}.paper .schedule{font-weight:700;text-align:center;margin-top:24pt;margin-bottom:12pt;font-size:12pt}.paper .blank{display:inline-block;min-width:110px;border-bottom:1px solid #000}.warn{background:#fff3cd;border:1px solid #ffe69c;padding:9px;border-radius:6px;margin:8px 0}
+@media(max-width:760px){.g2,.g3,.checklist,.row,.frow{grid-template-columns:1fr}.full{grid-column:auto}}
+@media print{body>*:not(#previewModal){display:none!important}#previewModal{display:block!important;position:static;background:white;padding:0}.modalbar{display:none}.modalbox{padding:0;max-width:none}.paper{padding:0;font-size:12pt}@page{size:legal portrait;margin:.55in}}
+</style></head>
+<body>
+<header><div><h1>Mortgage Documentation Generator</h1><div class="sub">Original Mortgage & Extensions • Source-Controlled Zero-Alteration Build</div></div><div class="badge">V5.3 RC13 — PATCHED / AUDIT PENDING</div></header>
+<div class="notice"><b>Document control:</b> Applicability is rule-driven from the supplied Bank documentation set. LDOC text is immutable: the tool selects the applicable prescribed form and fills variable fields only. No generic signature/photo table or shortened substitute text is injected.</div>
+<main>
+<section class="card"><div class="title">1. Mortgage Case</div><div class="grid g2">
+<div><label>Mortgage Case ID *</label><input id="caseId"></div><div><label>Borrower / Borrowing Entity *</label><input id="borrowerName"></div>
+<div><label>CIF</label><input id="cif"></div><div><label>Borrower Constitution</label><select id="borrowerConstitution"><option>Individual</option><option>Sole Proprietorship</option><option>Partnership Firm</option><option>Company</option></select></div>
+<div class="full"><label>Address</label><textarea id="address" rows="2"></textarea></div></div></section>
+
+<section class="card"><div class="title">2. Joint Borrowers / Borrowing Parties</div>
+<p class="help">Borrowers are maintained separately from Property Owners / Mortgagors. A borrower may or may not be a mortgagor.</p>
+<div id="borrowers"></div><button class="secondary" onclick="addBorrower()">+ Add Borrower</button>
+</section>
+
+<section class="card"><div class="title">3. Property Owners / Mortgagors</div>
+<p class="help">Loan-party role is stored separately from mortgage capacity. Generated mortgage forms describe the owner/depositor as Mortgagor where the prescribed form does so.</p>
+<div id="owners"></div><button class="secondary" onclick="addOwner()">+ Add Mortgagor / Co-owner</button></section>
+
+<section class="card"><div class="title">4. Property & Original Mortgage</div><div class="grid g2">
+<div><label>Property Ownership Type *</label><select id="propertyType"><option value="individual">Individual property</option><option value="joint">Jointly owned by individuals</option><option value="firm">Partnership firm's property</option><option value="company">Company's property</option></select></div>
+<div><label>Depositor / Person creating mortgage</label><select id="depositor"></select></div><div><label>Joint-owner execution mode</label><select id="jointMode" onchange="refreshChecklist()">
+<option value="all">All joint owners attend / assent</option>
+<option value="one">One joint owner / authorised person acts for others</option>
+</select></div>
+<div class="full"><label>Property Address / Location *</label><textarea id="propertyAddress" rows="2" placeholder="House No., street/locality, city, PIN"></textarea><div class="help">Used in location clauses such as Annexure B. Older cases without this field fall back to Property Description until updated.</div></div>
+<div class="full"><label>Property Description *</label><textarea id="propertyDescription" rows="3"></textarea></div>
+<div class="full"><label>Boundary Description *</label><textarea id="boundary" rows="4" placeholder="North:&#10;South:&#10;East:&#10;West:"></textarea></div>
+<div class="full"><label>First Schedule – Title Documents *</label><textarea id="firstSchedule" rows="5"></textarea></div>
+<div><label>Date of Mortgage *</label><input id="mortgageDate" type="date"></div><div><label>Time of Mortgage *</label><input id="mortgageTime" type="time"></div>
+</div></section>
+
+<section class="card"><div class="title">5. Original Loan Facilities</div><div id="facilities"></div><button class="secondary" onclick="addFacility()">+ Add Facility</button><div class="aggregate">Original Aggregate: ₹ <span id="agg">0</span></div></section>
+
+<section class="card"><div class="title">6. Legal Heirs</div><p class="help">Add all legal heirs to be reflected in the Affidavit. There is no limit on the number of legal heirs.</p><div id="legalHeirs"></div><button class="secondary" onclick="addLegalHeir()">+ Add Legal Heir</button></section>
+
+<section class="card"><div class="title">7. Mortgage Extensions</div><div class="grid g3">
+<div><label>Extension Date</label><input id="extensionDate" type="date"></div><div><label>Extension Time</label><input id="extensionTime" type="time"></div><div><label>Reference / Remarks</label><input id="extensionRemarks"></div></div>
+<div id="extFacilities"></div><button class="secondary" onclick="addExtFacility()">+ Add Additional / Enhanced Facility</button>
+<div style="margin-top:10px"><label>Third Schedule — Documents newly deposited at extension (LDOC 90(K) / 90(L))</label><textarea id="thirdScheduleInput" rows="4" placeholder="List each document on a new line:&#10;1. Certified copy of Sanction Letter dated...&#10;2. Certificate u/s 281 of Income Tax Act, 1961 bearing No...&#10;3. Updated Search Report dated...&#10;4. Valuation Report dated..."></textarea></div>
+<button class="primary" onclick="saveExtension()">Save Mortgage Extension</button>
+<div style="margin-top:10px"><label>Saved Mortgage Extensions</label><select id="extensionSelector" onchange="refreshChecklist()"><option value="">-- Select Extension --</option></select></div></section>
+
+<section class="card"><div class="title">8. Master Settings</div><div class="grid g2">
+<div><label>Branch Name *</label><input id="branchName" value="Khursipar Bhilai"></div><div><label>Branch Code</label><input id="branchCode"></div>
+<div><label>Processing / Credit Officer *</label><input id="processingOfficer"></div><div><label>Branch Manager *</label><input id="branchManager"></div>
+<div class="full"><label>Branch Address</label><textarea id="branchAddress"></textarea></div></div><button class="secondary" onclick="saveSettings()">Save Master Settings</button><span id="storageStatus" class="help" style="margin-left:8px"></span></section>
+
+<section class="card"><div class="title">9. Document Generation</div><div class="grid g2">
+<div><label>Mortgage Event *</label><select id="mortgageEvent" onchange="refreshChecklist()"><option value="original">Original / Creation of Mortgage</option><option value="ext1">1st Extension</option><option value="ext2">2nd Extension</option><option value="extN">Subsequent Extension</option></select></div>
+<div><label>Selected Extension</label><select id="eventExtension" onchange="refreshChecklist()"><option value="">-- Select saved extension --</option></select></div></div>
+<div id="ruleWarning"></div>
+<div id="ownerDocChooser" style="display:none;margin:10px 0"><label>Mortgagor for individual-form document (e.g. 90C)</label><select id="docOwner"></select></div>
+<h3>Applicable Document Checklist</h3><div id="checklist" class="checklist"></div>
+<div class="actions"><button class="primary" onclick="saveCase()">Save Case</button><button class="secondary" onclick="openCaseSearch()">Search Cases</button><button class="secondary" id="updateCaseBtn" onclick="updateCase()" disabled>Update Case</button><button class="danger" onclick="deleteCase()">Delete</button><button class="secondary" onclick="exportData()">Export Backup</button><label class="btn secondary">Import Backup<input hidden type="file" accept=".json" onchange="importData(event)"></label></div></section>
+</main><footer>Mortgage Documentation Generator • V5.3 Source-Controlled RC11 • Offline</footer>
+
+<div id="caseSearchModal" style="display:none;position:fixed;inset:0;background:#0008;z-index:98;padding:20px;overflow:auto"><div class="modalbox" style="max-width:760px"><div class="modalbar"><button class="secondary" onclick="closeCaseSearch()">Close</button></div><h2>Search / Load Mortgage Case</h2><input id="caseSearchQuery" placeholder="Enter Case ID or borrower name" oninput="renderCaseSearch()"><div id="caseSearchResults" style="margin-top:12px"></div></div></div>
+
+<div id="previewModal"><div class="modalbox"><div class="modalbar"><button class="secondary" onclick="closePreview()">Close</button><button class="secondary" onclick="downloadWord()">Editable Word</button><button class="primary" onclick="window.print()">Print / Save PDF</button></div><div id="paper" class="paper" contenteditable="true"></div></div></div>
+
+<script>
+const $=id=>document.getElementById(id), esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+let extensions=[], currentDoc={title:'',html:''};
+function fmt(n){return formatIndianCurrency(normalizeFacilityAmount(n))}
+
+function numToIndianWords(num) {
+    num = Math.round(Number(num) || 0);
+    if (num === 0) return 'Zero';
+    const a = ['', 'One ', 'Two ', 'Three ', 'Four ', 'Five ', 'Six ', 'Seven ', 'Eight ', 'Nine ', 'Ten ', 'Eleven ', 'Twelve ', 'Thirteen ', 'Fourteen ', 'Fifteen ', 'Sixteen ', 'Seventeen ', 'Eighteen ', 'Nineteen '];
+    const b = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+
+    function numToWords(n, ch) {
+        let str = '';
+        if (n > 19) {
+            str += b[Math.floor(n / 10)] + ' ' + a[n % 10];
+        } else {
+            str += a[n];
+        }
+        if (n !== 0) str += ch;
+        return str;
+    }
+
+    let words = '';
+    words += numToWords(Math.floor(num / 10000000), 'Crore ');
+    words += numToWords(Math.floor((num / 100000) % 100), 'Lakh ');
+    words += numToWords(Math.floor((num / 1000) % 100), 'Thousand ');
+    words += numToWords(Math.floor((num / 100) % 10), 'Hundred ');
+    words += numToWords(Math.floor(num % 100), '');
+    return words.trim().replace(/\s+/g, ' ');
+}
+
+function formatIndianCurrency(num) {
+    const n = Math.round(normalizeFacilityAmount(num));
+    const x = String(n);
+    let lastThree = x.substring(x.length - 3);
+    let otherNumbers = x.substring(0, x.length - 3);
+    if (otherNumbers !== '') lastThree = ',' + lastThree;
+    return otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ',') + lastThree;
+}
+
+function normalizeFacilityAmount(value) {
+    if (value === null || value === undefined || value === '') return 0;
+    if (typeof value === 'number') return Number.isFinite(value) ? value : 0;
+    const cleaned = String(value).replace(/₹/g, '').replace(/,/g, '').replace(/[^\d.-]/g, '');
+    const amount = Number(cleaned);
+    return Number.isFinite(amount) ? amount : 0;
+}
+
+function buildFacilityBreakdown(facilities) {
+    const list = Array.isArray(facilities) ? facilities : [];
+    const validFacilities = list.map(function(f) {
+        f = f || {};
+        return {
+            name: String(f.facilityType ?? f.facilityName ?? f.name ?? '').trim(),
+            amount: normalizeFacilityAmount(f.amount ?? f.limit ?? f.sanctionedAmount ?? 0)
+        };
+    }).filter(function(f) {
+        return f.name !== '' && Number.isFinite(f.amount) && f.amount >= 0;
+    });
+
+    const aggregateAmount = validFacilities.reduce(function(total, f) {
+        return total + f.amount;
+    }, 0);
+
+    const facilityParts = validFacilities.map(function(f) {
+        return `${esc(f.name)} of Rs. ${formatIndianCurrency(f.amount)}/- (Rupees ${numToIndianWords(f.amount)} Only)`;
+    });
+
+    let breakdown = facilityParts.join(' & ');
+    if (validFacilities.length) {
+        breakdown += ` aggregating to Rs. ${formatIndianCurrency(aggregateAmount)}/- (Rupees ${numToIndianWords(aggregateAmount)} Only)`;
+    }
+
+    return { text: breakdown, aggregateAmount, facilities: validFacilities };
+}
+
+function facilityDetails(fs) {
+    return `<p class="facilityParagraph">${buildFacilityBreakdown(fs).text}</p>`;
+}
+
+/* Compilation context. It is refreshed immediately before every render cycle. */
+let compilationCaseData = null;
+let facilitySummary = '';
+function prepareCompilationContext(c) {
+    compilationCaseData = c;
+    const active = activeFacilities(c);
+    facilitySummary = buildFacilityBreakdown(active).text;
+    return facilitySummary;
+}
+function officerExecution(c){return `<div class="officerExec"><div>${esc(c.settings.processingOfficer)}<br><b>Processing/Credit Officer</b></div><div>${esc(c.settings.branchManager)}<br><b>Branch Manager</b></div></div>`}
+function fdate(s){if(!s)return '';let [y,m,d]=s.split('-');return `${d}-${m}-${y}`}
+function addBorrower(v={}){
+ let d=document.createElement('div');d.className='row borrowerRow';
+ d.innerHTML=`<div><label>Full Name *</label><input class="bname" value="${esc(v.name||'')}"></div><div><label>Relation / Parent-Spouse</label><input class="brel" value="${esc(v.relation||'')}"></div><div><label>Borrower Role</label><select class="brole">${['Borrower','Co-borrower','Guarantor'].map(x=>`<option ${v.role==x?'selected':''}>${x}</option>`).join('')}</select></div><div></div><button class="danger" onclick="this.parentElement.remove();syncBorrowerSummary();refreshChecklist()">×</button>`;
+ $('borrowers').appendChild(d);d.querySelector('.bname').addEventListener('input',syncBorrowerSummary);syncBorrowerSummary();refreshChecklist();
+}
+function borrowers(){return [...document.querySelectorAll('#borrowers .borrowerRow')].map(r=>({name:r.querySelector('.bname').value.trim(),relation:r.querySelector('.brel').value.trim(),role:r.querySelector('.brole').value})).filter(x=>x.name)}
+function borrowerNames(c){let bs=(c.borrowers||[]).filter(x=>x&&x.name).map(x=>x.name);if(bs.length)return bs;if(c.borrowerName)return [c.borrowerName];return []}
+function borrowerNameList(c){let ns=borrowerNames(c);if(ns.length===0)return '';if(ns.length===1)return ns[0];if(ns.length===2)return ns[0]+' and '+ns[1];return ns.slice(0,-1).join(', ')+' & '+ns.at(-1)}
+function syncBorrowerSummary(){let bs=borrowers();if(bs.length)$('borrowerName').value=bs.length===1?bs[0].name:bs.slice(0,-1).map(x=>x.name).join(', ')+' & '+bs.at(-1).name}
+
+function addOwner(v={}){let d=document.createElement('div');d.className='row';d.innerHTML=`<div><label>Full Name *</label><input class="oname" value="${esc(v.name||'')}"></div><div><label>Relation / Parent-Spouse</label><input class="orel" value="${esc(v.relation||'')}"></div><div><label>Loan-party Role</label><select class="orole">${['Borrower','Co-borrower','Guarantor','Third-party Mortgagor'].map(x=>`<option ${v.role==x?'selected':''}>${x}</option>`).join('')}</select></div><div><label>Ownership Share / Note</label><input class="oshare" value="${esc(v.share||'')}"></div><button class="danger" onclick="this.parentElement.remove();syncDepositors()">×</button>`; $('owners').appendChild(d); d.querySelector('.oname').addEventListener('input',syncDepositors); syncDepositors();refreshChecklist()}
+function owners(){return [...document.querySelectorAll('#owners .row')].map(r=>({name:r.querySelector('.oname').value.trim(),relation:r.querySelector('.orel').value.trim(),role:r.querySelector('.orole').value,share:r.querySelector('.oshare').value.trim()})).filter(x=>x.name)}
+function syncDepositors(){let old=$('depositor').value, os=owners(); $('depositor').innerHTML=os.map((o,i)=>`<option value="${i}">${esc(o.name)}</option>`).join(''); if([...$('depositor').options].some(o=>o.value==old))$('depositor').value=old}
+function addFacility(v={}){let d=document.createElement('div');d.className='frow';d.innerHTML=`<div><label>Facility Name</label><input class="fname" value="${esc(v.name||'')}"></div><div><label>Loan A/c No.</label><input class="facc" value="${esc(v.account||'')}"></div><div><label>Amount (₹)</label><input class="famt" type="number" min="0" value="${esc(v.amount||'')}"></div><button class="danger" onclick="this.parentElement.remove();calcAgg()">×</button>`;$('facilities').appendChild(d);d.querySelector('.famt').addEventListener('input',calcAgg);calcAgg()}
+function facilities(root='facilities'){return [...document.querySelectorAll(`#${root} .frow`)].map(r=>{const obj={name:r.querySelector('.fname').value.trim(),account:r.querySelector('.facc').value.trim(),amount:+r.querySelector('.famt').value||0};const prev=r.querySelector('.fprev');if(prev)obj._previousLimit=+prev.value||0;return obj}).filter(x=>x.name||x.amount)}
+function addLegalHeir(v={}){let d=document.createElement('div');d.className='row heirrow';d.innerHTML=`<div><label>Legal Heir Name *</label><input class="hname" value="${esc(v.name||'')}"></div><div><label>Relation</label><input class="hrel" value="${esc(v.relation||'')}"></div><button class="danger" onclick="this.parentElement.remove()">×</button>`;$('legalHeirs').appendChild(d)}
+function legalHeirs(){return [...document.querySelectorAll('#legalHeirs .heirrow')].map(r=>({name:r.querySelector('.hname').value.trim(),relation:r.querySelector('.hrel').value.trim()})).filter(x=>x.name)}
+function calcAgg(){$('agg').textContent=fmt(facilities().reduce((a,b)=>a+b.amount,0))}
+function addExtFacility(v={}){let d=document.createElement('div');d.className='frow';d.style.gridTemplateColumns='1.5fr 1fr 1fr 1fr auto';d.innerHTML=`<div><label>Additional / Enhanced Facility</label><input class="fname" value="${esc(v.name||'')}"></div><div><label>Loan A/c No.</label><input class="facc" value="${esc(v.account||'')}"></div><div><label>Previous Limit (₹)</label><input class="fprev" type="number" min="0" placeholder="0 if new facility" value="${esc(v._previousLimit||'')}"></div><div><label>Additional Amount (₹)</label><input class="famt" type="number" min="0" value="${esc(v.amount||'')}"></div><button class="danger" onclick="this.parentElement.remove()">×</button>`;$('extFacilities').appendChild(d)}
+function saveExtension(){let x={date:$('extensionDate').value,time:$('extensionTime').value,remarks:$('extensionRemarks').value.trim(),facilities:facilities('extFacilities'),thirdSchedule:$('thirdScheduleInput').value.trim()};if(!x.date||!x.facilities.length)return alert('Enter extension date and at least one facility.');extensions.push(x);renderExtensions();$('extFacilities').innerHTML='';addExtFacility();$('extensionDate').value='';$('extensionTime').value='';$('extensionRemarks').value='';$('thirdScheduleInput').value='';}
+function renderExtensions(){let opts=extensions.map((x,i)=>`<option value="${i}">${i+1}. ${fdate(x.date)} — ${esc(x.remarks||'Extension')}</option>`).join('');$('extensionSelector').innerHTML='<option value="">-- Select Extension --</option>'+opts;$('eventExtension').innerHTML='<option value="">-- Select saved extension --</option>'+opts}
+let loadedCaseId='';
+const CASE_STORE='bob_mortgage_cases', SETTINGS_STORE='bob_mortgage_settings';
+let storageDbPromise=null;
+function safeLSGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function safeLSSet(k,v){try{localStorage.setItem(k,v);return true}catch(e){return false}}
+function openStorageDB(){if(storageDbPromise)return storageDbPromise;storageDbPromise=new Promise((resolve,reject)=>{try{let r=indexedDB.open('BOB_Mortgage_V53',1);r.onupgradeneeded=()=>{let db=r.result;if(!db.objectStoreNames.contains('cases'))db.createObjectStore('cases',{keyPath:'caseId'});if(!db.objectStoreNames.contains('meta'))db.createObjectStore('meta',{keyPath:'key'})};r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)}catch(e){reject(e)}});return storageDbPromise}
+async function idbPut(store,obj){let db=await openStorageDB();return new Promise((res,rej)=>{let tx=db.transaction(store,'readwrite');tx.objectStore(store).put(obj);tx.oncomplete=()=>res(true);tx.onerror=()=>rej(tx.error)})}
+async function idbGet(store,key){let db=await openStorageDB();return new Promise((res,rej)=>{let tx=db.transaction(store,'readonly'),r=tx.objectStore(store).get(key);r.onsuccess=()=>res(r.result||null);r.onerror=()=>rej(r.error)})}
+async function idbAll(store){let db=await openStorageDB();return new Promise((res,rej)=>{let tx=db.transaction(store,'readonly'),r=tx.objectStore(store).getAll();r.onsuccess=()=>res(r.result||[]);r.onerror=()=>rej(r.error)})}
+async function idbDelete(store,key){let db=await openStorageDB();return new Promise((res,rej)=>{let tx=db.transaction(store,'readwrite');tx.objectStore(store).delete(key);tx.oncomplete=()=>res(true);tx.onerror=()=>rej(tx.error)})}
+function localCases(){try{return JSON.parse(safeLSGet(CASE_STORE)||'{}')}catch(e){return {}}}
+async function syncCaseToIndexedDB(c){try{await idbPut('cases',c);return true}catch(e){return false}}
+async function syncSettingsToIndexedDB(st){try{await idbPut('meta',{key:'settings',value:st});return true}catch(e){return false}}
+function setStorageStatus(t,ok=true){let e=$('storageStatus');if(e)e.textContent=t;e&&e.style&&(e.style.color=ok?'#2f6b3b':'#8b1d25')}
+function getCase(){let bs=borrowers();return {caseId:$('caseId').value.trim(),borrowers:bs,borrowerName:bs.length?(bs.length===1?bs[0].name:bs.slice(0,-1).map(x=>x.name).join(', ')+' & '+bs.at(-1).name):$('borrowerName').value.trim(),cif:$('cif').value.trim(),address:$('address').value.trim(),propertyAddress:$('propertyAddress').value.trim(),borrowerConstitution:$('borrowerConstitution').value,owners:owners(),propertyType:$('propertyType').value,depositor:+($('depositor').value||0),jointMode:$('jointMode').value,propertyDescription:$('propertyDescription').value.trim(),boundary:$('boundary').value.trim(),firstSchedule:$('firstSchedule').value.trim(),mortgageDate:$('mortgageDate').value,mortgageTime:$('mortgageTime').value,facilities:facilities(),legalHeirs:legalHeirs(),extensions,settings:{branchName:$('branchName').value.trim(),branchCode:$('branchCode').value.trim(),processingOfficer:$('processingOfficer').value.trim(),branchManager:$('branchManager').value.trim(),branchAddress:$('branchAddress').value.trim()}}}
+function validate(){let c=getCase(),m=[];if(!c.caseId)m.push('Case ID');if(!c.borrowerName)m.push('Borrower');if(!c.owners.length)m.push('Mortgagor');if(!c.propertyDescription)m.push('Property description');if(!c.propertyAddress)m.push('Property address / location');if(!c.firstSchedule)m.push('Title documents');if(!c.mortgageDate)m.push('Mortgage date');if(!c.facilities.length)m.push('Facility');if(!c.settings.branchName)m.push('Branch');if(!c.settings.processingOfficer)m.push('Processing Officer');if(!c.settings.branchManager)m.push('Branch Manager');if(m.length){alert('Complete: '+m.join(', '));return false}return true}
+async function saveSettings(){let st=getCase().settings;let ls=safeLSSet(SETTINGS_STORE,JSON.stringify(st));let db=await syncSettingsToIndexedDB(st);setStorageStatus((ls||db)?'Master settings saved locally.':'Storage unavailable.',ls||db);if(!(ls||db))return alert('Unable to save master settings in this browser.');alert('Master settings saved.')}
+async function saveCase(){if(!validate())return;let c=getCase(),all=localCases();c._savedAt=new Date().toISOString();c._appVersion='V5.3-RC13.1-IMPORT-FIX';all[c.caseId]=c;let ls=safeLSSet(CASE_STORE,JSON.stringify(all));let db=await syncCaseToIndexedDB(c);if(ls||db){loadedCaseId=c.caseId;$('updateCaseBtn').disabled=false;setStorageStatus('Case '+c.caseId+' saved locally.');alert('Case '+c.caseId+' saved successfully.')}else alert('Unable to save case in this browser.')}
+async function updateCase(){if(!loadedCaseId){let id=$('caseId').value.trim();if(!id)return alert('Load a saved case before using Update Case.');loadedCaseId=id}let c=getCase();if(c.caseId!==loadedCaseId)return alert('Case ID cannot be changed during Update. Use Save Case for a new Case ID.');if(!validate())return;let all=localCases();if(!all[c.caseId]){let dbExisting=await idbGet('cases',c.caseId);if(!dbExisting)return alert('Case '+c.caseId+' is not loaded/saved. Use Save Case.')}c._savedAt=new Date().toISOString();c._appVersion='V5.3-RC13.1-IMPORT-FIX';all[c.caseId]=c;let ls=safeLSSet(CASE_STORE,JSON.stringify(all));let db=await syncCaseToIndexedDB(c);if(ls||db){setStorageStatus('Case '+c.caseId+' updated locally.');alert('Case '+c.caseId+' updated successfully.')}else alert('Unable to update case in this browser.')}
+async function loadCaseById(id){id=(id||'').trim();if(!id)return false;let c=localCases()[id]||await idbGet('cases',id);if(!c)return false;c=normalizeImportedCase(c,c.settings||{});for(let k of ['caseId','borrowerName','cif','address','propertyAddress','borrowerConstitution','propertyType','jointMode','propertyDescription','boundary','firstSchedule','mortgageDate','mortgageTime'])if($(k))$(k).value=c[k]||'';$('borrowers').innerHTML='';if(Array.isArray(c.borrowers)&&c.borrowers.length)c.borrowers.forEach(addBorrower);else if(c.borrowerName)addBorrower({name:c.borrowerName,role:'Borrower'});$('owners').innerHTML='';(c.owners||[]).forEach(addOwner);$('facilities').innerHTML='';(c.facilities||[]).forEach(addFacility);$('legalHeirs').innerHTML='';(c.legalHeirs||[]).forEach(addLegalHeir);extensions=c.extensions||[];renderExtensions();Object.entries(c.settings||{}).forEach(([k,v])=>{$(k)&&($(k).value=v||'')});syncDepositors();$('depositor').value=String(c.depositor||0);calcAgg();refreshChecklist();loadedCaseId=c.caseId;$('updateCaseBtn').disabled=false;setStorageStatus('Case '+c.caseId+' loaded.');return true}
+async function loadCase(){let id=$('caseId').value.trim();if(!id)return openCaseSearch();if(!(await loadCaseById(id)))alert('Case not found: '+id)}
+async function openCaseSearch(){await renderCaseSearch();$('caseSearchModal').style.display='block';setTimeout(()=>$('caseSearchQuery').focus(),0)}
+function closeCaseSearch(){$('caseSearchModal').style.display='none'}
+async function renderCaseSearch(){let q=($('caseSearchQuery')?.value||'').trim().toLowerCase(),map=new Map();try{for(const x of await idbAll('cases'))map.set(x.caseId,x)}catch(e){}Object.values(localCases()).forEach(x=>map.set(x.caseId,x));let items=[...map.values()].filter(x=>!q||String(x.caseId).toLowerCase().includes(q)||String(x.borrowerName).toLowerCase().includes(q)||String(x.cif||'').toLowerCase().includes(q)).sort((a,b)=>String(a.caseId).localeCompare(String(b.caseId)));let box=$('caseSearchResults');if(!box)return;box.innerHTML=items.length?items.map(x=>`<div class="doccard"><b>${esc(x.caseId)}</b> — ${esc(x.borrowerName||'')}<br><span class="help">${esc(x.propertyDescription||'')}</span><br><button class="primary" onclick="selectCaseSearch('${esc(x.caseId).replace(/'/g,"\\'")}')">Load</button></div>`).join(''):'<div class="warn">No saved cases found. If you saved the case in another copy/path of the HTML file, use Export Backup from that copy and Import Backup here; file:// browser storage can be path/origin dependent.</div>'}
+
+async function selectCaseSearch(id){closeCaseSearch();$('caseId').value=id;let ok=await loadCaseById(id);if(!ok)alert('Case not found: '+id)}
+async function deleteCase(){let id=$('caseId').value.trim();if(!id)return alert('Enter or load a Case ID.');let all=localCases();let exists=all[id]||await idbGet('cases',id);if(exists&&confirm('Delete case '+id+'?')){delete all[id];safeLSSet(CASE_STORE,JSON.stringify(all));await idbDelete('cases',id);loadedCaseId='';$('updateCaseBtn').disabled=true;alert('Deleted.')}}
+async function exportData(){let all=localCases();try{for(const x of await idbAll('cases'))all[x.caseId]=x}catch(e){}let st={};try{st=JSON.parse(safeLSGet(SETTINGS_STORE)||'{}')}catch(e){}try{let m=await idbGet('meta','settings');if(m?.value)st=m.value}catch(e){}let blob=new Blob([JSON.stringify({cases:all,settings:st},null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='BOB_Mortgage_Backup.json';a.click();URL.revokeObjectURL(a.href)}
+function normalizeImportedCase(raw, fallbackSettings={}){
+ if(!raw || typeof raw!=='object') throw new Error('Invalid case record');
+ const c={...raw};
+ const pick=(...vals)=>{for(const v of vals){if(typeof v==='string'&&v.trim())return v.trim()}return ''};
+ c.caseId=pick(c.caseId,c.case_id,c.id);
+ if(!c.caseId) throw new Error('A case record has no Case ID');
+ c.propertyAddress=pick(
+   c.propertyAddress,c.propertyLocation,c.property_address,c.property_location,
+   c.immovablePropertyAddress,c.immovable_property_address,c.addressOfProperty,
+   c.propertyAddr,c.property_addr,c.collateral?.propertyAddress,
+   c.property?.address,c.security?.propertyAddress
+ );
+ // Keep the property address separate from the borrower's residential address and
+ // from the legal property description; do not silently substitute either field.
+ c.settings={...(fallbackSettings||{}),...(c.settings||{})};
+ c.borrowers=Array.isArray(c.borrowers)?c.borrowers:[];
+ c.owners=Array.isArray(c.owners)?c.owners:[];
+ c.facilities=Array.isArray(c.facilities)?c.facilities:[];
+ c.legalHeirs=Array.isArray(c.legalHeirs)?c.legalHeirs:[];
+ c.extensions=Array.isArray(c.extensions)?c.extensions:[];
+ c._appVersion='V5.3-RC13.1-IMPORT-FIX';
+ return c;
+}
+function importData(e){
+ const f=e.target.files&&e.target.files[0];if(!f)return;
+ const r=new FileReader;
+ r.onload=async()=>{
+  try{
+   const d=JSON.parse(r.result);
+   let source=d&&d.cases!==undefined?d.cases:(Array.isArray(d)?d:(d&&d.caseId? [d]:null));
+   if(!source)throw new Error('Unsupported JSON structure. Expected exported backup {cases, settings}, an array of cases, or a single case record.');
+   let entries=Array.isArray(source)?source:Object.values(source);
+   if(!entries.length)throw new Error('The JSON file contains no case records.');
+   const settings=d.settings||{};
+   const normalized=entries.map(c=>normalizeImportedCase(c,settings));
+   const all=localCases();
+   normalized.forEach(c=>{all[c.caseId]=c});
+   const ls=safeLSSet(CASE_STORE,JSON.stringify(all));
+   let dbCount=0;for(const c of normalized)if(await syncCaseToIndexedDB(c))dbCount++;
+   if(settings&&Object.keys(settings).length){safeLSSet(SETTINGS_STORE,JSON.stringify(settings));await syncSettingsToIndexedDB(settings)}
+   if(!ls&&!dbCount)throw new Error('The cases could not be saved to browser storage.');
+   // A one-case import is loaded straight into the form so validation does not
+   // run against the empty starter form. Multiple cases remain searchable.
+   if(normalized.length===1){
+    const loaded=await loadCaseById(normalized[0].caseId);
+    if(!loaded)throw new Error('Imported case saved but could not be loaded into the form.');
+    alert('Backup imported and case "'+normalized[0].caseId+'" loaded into the form. Please verify the Property Address / Location field before generating documents.');
+   }else{
+    alert(normalized.length+' cases imported. Open Search Cases and click Load on the case you want to work on. Imported data is saved, but the form is not automatically populated when multiple cases are present.');
+    await openCaseSearch();
+   }
+   setStorageStatus(normalized.length+' case(s) imported; '+dbCount+' synced to IndexedDB.');
+  }catch(err){alert('Import failed: '+(err&&err.message?err.message:'Invalid backup file.'))}
+  finally{e.target.value=''}
+ };
+ r.onerror=()=>{alert('Unable to read the selected JSON file.');e.target.value=''};
+ r.readAsText(f);
+}
+function facilityTable(fs){return facilityDetails(fs)}
+function total(fs){return fs.reduce((a,b)=>a+b.amount,0)}
+function schedule(c){return `<div class="schedule">FIRST SCHEDULE</div><div class="scheduleDetails" style="white-space:pre-wrap">${esc(c.firstSchedule)}</div><div class="schedule">SECOND SCHEDULE</div><div class="scheduleDetails"><b>Description of the mortgaged immovable properties</b></div><p class="scheduleDetails">${esc(c.propertyDescription)}</p><p class="scheduleDetails"><b>Boundary Description</b><br><span style="white-space:pre-wrap">${esc(c.boundary)}</span></p>`}
+function schedule90A(c){return `<div class="schedule">FIRST SCHEDULE</div><div class="scheduleDetails">(List of documents of title, evidences, deeds and writings)</div><div class="scheduleDetails" style="white-space:pre-wrap">${esc(c.firstSchedule)}</div><div class="schedule">SECOND SCHEDULE</div><div class="scheduleDetails"><b>Description of the mortgaged immovable properties</b></div><p class="scheduleDetails">${esc(c.propertyDescription)}</p><p class="scheduleDetails"><b>Boundary Description</b><br><span style="white-space:pre-wrap">${esc(c.boundary)}</span></p>`}
+function ownerList(c){return (c.owners||[]).filter(o=>o.name).map(o=>o.name)}
+function jointNames(c){let ns=ownerList(c);if(ns.length===0)return '';if(ns.length===1)return ns[0];if(ns.length===2)return ns[0]+' and '+ns[1];return ns.slice(0,-1).join(', ')+', and '+ns.at(-1)}
+function jointIdentity(c){let os=(c.owners||[]).filter(o=>o.name);if(os.length<=1)return os[0]?.name||'';return os.map(o=>o.relation?`${o.name}, ${o.relation}`:o.name).join(' and ')}
+function jointPronouns(c){let plural=(c.owners||[]).filter(o=>o.name).length>1;return {plural,I:plural?'We':'I',we:plural?'we':'I',me:plural?'us':'me',my:plural?'our':'my',are:plural?'are':'am',have:plural?'have':'has',their:plural?'their':'his/her',them:plural?'them':'him/her',mort:plural?'MORTGAGORS':'MORTGAGOR',owners:plural?'Mortgagors':'Mortgagor'} }
+function mortNames(c){return c.owners.map(o=>o.name).join(', ')}
+function eventExt(){let i=$('eventExtension').value;return i===''?null:extensions[+i]}
+function isExtensionEvent(){return $('mortgageEvent').value!=='original'}
+function activeDate(c){let x=eventExt();return isExtensionEvent()?(x?.date||c.mortgageDate):c.mortgageDate}
+function activeTime(c){let x=eventExt();return isExtensionEvent()?(x?.time||c.mortgageTime):c.mortgageTime}
+function activeFacilities(c){let x=eventExt();return isExtensionEvent()?(x?.facilities||[]):c.facilities}
+function ownerIndexesForIndividualForms(c){return c.propertyType==='joint'?c.owners.map((_,i)=>i):[+($('docOwner')?.value||0)]}
+function bundleOwnerForms(c,renderer){let ids=ownerIndexesForIndividualForms(c);return ids.map((idx,n)=>`${n?'<div class="pagebreak"></div>':''}${renderer(c,c.owners[idx]||{},idx)}`).join('')}
+function docsFor(){
+ let c=getCase(),ev=$('mortgageEvent').value,p=c.propertyType,docs=[];
+ let joint=(p==='joint'), oneActor=(joint && c.jointMode==='one');
+ if(ev==='original'){
+   docs.push(['annA','Annexure A — Attendance at Creation'],['annB','Annexure B — Mortgagor Confirmation'],['undertaking','Letter of Undertaking'],['affidavit','Affidavit — Mortgage Declaration']);
+   if(p==='individual') docs.push(['90A','LDOC 90(A) — Memorandum of Entry'],['90C','LDOC 90(C) — Declaration'],['90D','LDOC 90(D) — Letter of Confirmation']);
+   else if(p==='joint'){docs.push(['90A','LDOC 90(A) — Memorandum of Entry — all joint mortgagors'],['90C','LDOC 90(C) — separate prescribed declaration for each joint mortgagor'],['90J','LDOC 90(J) — Confirmation by Joint Owners']);if(oneActor)docs.push(['92','LDOC 92 — Letter of Authority']);}
+   else if(p==='company') docs.push(['90F','LDOC 90(F) — Memorandum of Entry'],['90E','LDOC 90(E) — Declaration']);
+   else if(p==='firm'){docs.push(['90E','LDOC 90(E) — Declaration']);if(c.jointMode==='one')docs.push(['92','LDOC 92 — Letter of Authority']);}
+ }else{
+   docs.push(['annA','Annexure A — Attendance at Extension'],['annB','Annexure B — Confirmation of Extension'],['annC','Annexure C — Letter of Undertaking'],['affidavit','Affidavit — Mortgage Declaration']);
+   if(p==='individual'||p==='joint'){
+     docs.push(['90C','LDOC 90(C) — Declaration — extension package']);
+     if(ev==='ext1')docs.push(['90K','LDOC 90(K) — First Extension of Mortgage']);
+     else if(ev==='ext2')docs.push(['90L','LDOC 90(L) — Second Extension of Mortgage']);
+     docs.push(['90P','LDOC 90(P) — Letter of Confirmation of Mortgage Extension']);
+     if(joint)docs.push(['90J','LDOC 90(J) — Confirmation of Extension by Joint Owners']);
+     if(oneActor)docs.push(['92','LDOC 92 — Letter of Authority']);
+   }else if(p==='company')docs.push(['90G','LDOC 90(G) — Supplemental Memorandum of Entry'],['90P','LDOC 90(P) — Letter of Confirmation of Mortgage Extension']);
+   else if(p==='firm'){docs.push(['90E','LDOC 90(E) — Declaration'],['90P','LDOC 90(P) — Letter of Confirmation of Mortgage Extension']);if(c.jointMode==='one')docs.push(['92','LDOC 92 — Letter of Authority']);}
+ }
+ let seen=new Set();return docs.filter(d=>!seen.has(d[0])&&seen.add(d[0]));
+}
+function refreshChecklist(){let ev=$('mortgageEvent').value,w='',c=getCase();
+ if($('docOwner')){$('docOwner').innerHTML=c.owners.map((o,i)=>`<option value="${i}">${esc(o.name)}</option>`).join('');$('ownerDocChooser').style.display=(c.propertyType==='joint'?'block':'none');}
+ if(ev!=='original'&&!eventExt())w='<div class="warn">Select the saved mortgage extension corresponding to this event before generation.</div>';
+ if(ev!=='original')w+='<div class="warn"><b>Extension control:</b> Bank guidance requires the full set of documents appropriate to the advance for an enhanced/fresh additional advance. This mortgage module lists the controlled mortgage-extension package; facility/product documents outside this mortgage module must also be completed where applicable.</div>';
+ if(ev==='extN')w+='<div class="warn"><b>Subsequent-extension caution:</b> the supplied source expressly identifies 90K for first extension and 90L for second extension. RC3 does not invent a third supplemental MOE; the general confirmation is shown pending case-specific verification.</div>';
+ $('ruleWarning').innerHTML=w;$('checklist').innerHTML=docsFor().map(d=>`<div class="doccard"><strong>${esc(d[1])}</strong><span class="tag">Source-controlled renderer</span><br><button class="primary" onclick="generate('${d[0]}')">Preview / Edit / Print</button></div>`).join('')
+}
+function header(code,title,sub=''){return `<table class="noborder"><tr><td><b>${esc(code)}</b></td><td style="text-align:right"><b>${esc(code.replace('LDOC ',''))}</b></td></tr></table><h2>${esc(title)}</h2>${sub?`<h3>${esc(sub)}</h3>`:''}`}
+function affidavit(c){let p=jointPronouns(c),names=esc(jointNames(c)),fs=activeFacilities(c),heirs=c.legalHeirs||[],one=!p.plural;let subject=one?`I, ${names}`:`I / We ${names}`;let my=one?'my':'our',me=one?'me':'us',have=one?'have':'have',are=one?'am':'are',heirRows=heirs.length?heirs.map((h,i)=>`${i+1}. ${esc(h.name)}${h.relation?` (${esc(h.relation)})`:''}`).join('<br>'):'____________________________';return `<div class="document"><div class="title center">BEFORE PUBLIC NOTARY</div><div class="title center">AFFIDAVIT</div><p>${subject}, Indian inhabitant residing at ${esc(c.address)} confirm that on my/our request letter Dated_____________. ${p.I}/We have been sanctioned Term Loans (${esc(fs.map(x=>x.name).join(' & '))}) by Bank of Baroda having its Head office at Baroda and among others a Branch office at ${esc(c.settings.branchName)} Tehsil & District-Durg (C.G.).</p><p><b>Details of Property:-</b></p><p>${esc(c.propertyDescription)} belonging to ${esc(jointNames(c))}.</p><p><b>Boundaries:</b></p><p style="white-space:pre-wrap">${esc(c.boundary)}</p><p>That ${p.I}/We have not taken any other term loan from any bank or financial institution and shall not avail any such without written permission from BOB.</p><p>1. That the house /Flat /Shop / Land to be constructed / purchased / mortgage from the loan taken from BOB shall be used for own use and not for any commercial consideration.</p><p>2. That the house /Flat /Shop / Land to be constructed / purchased / mortgage shall be kept in good condition and the BOB officials will be permitted to inspect the same at my cost.</p><p>3. That the Income declared in my/our tax returns/balance sheet/profit and loss account/Salary slip is true and correct.</p><p>4. That ${p.I}/We shall be responsible for the consequence including return of the term loan to BOB if the above is not found in order at any future date.</p><p>5. That ${p.I}/We are not related to any of the officials of BOB.</p><p>6. That ${p.I}/We have not defaulted in repayment of any loan with any bank or institutions and accounts maintained by us with BOB, other banks and/or other institutions. ${p.I}/We have not been categorized as non-performing asset in any of the bank/institutions, neither ${p.I}/We have sought any rebate or concession or relief from BOB at any time.</p><p>7. That ${p.I}/We authorize BOB to divulge any information about ${me} to any bank/institutions/law enforcing agencies without any intimation to ${me}.</p><p>8. That ${p.I}/We authorize BOB to debit my/our account Saving Bank A/c No.__________________ with BOB or any other branch for the installment and interest.</p><p>9. Any breach of stipulation of the bank’s policy and/or the borrowers undertaking shall be deemed to be a breach of conditions on which the aforesaid loan was agreed to be granted by bank and such breach of conditions may be treated as a default under the loan agreement and the Bank shall be entitled to charge penal interest over & above the agreed rate of interest on the O/S loan amount & to take such further action against the borrower as the bank may deem fit including recalling of the loan amount forthwith and initiating the recovery proceedings in accordance with law.</p><p>10. That in the event of default in repayment of two consecutive installments BOB shall have the liberty to take all suitable steps including taking possession of the house and of selling the same to recover the dues. All expenses in this regard shall be borne by ${me}.</p><p>11. That ${p.I}/We declare and confirm that no proceeding are pending or contemplated against ${me} under Chapter…… of the Income Tax Act, 1961 as on the date of creation of equitable mortgage.</p><p>12. That ${p.I}/We have submitted post-dated cheques for repayment of the loan in the event of any of the cheques being dishonored.</p><p>13. That ${p.I}/We undertake that the properties have clear and marketable title free from encumbrance, disputes, attachments and litigation.</p><p>14. That ${p.I}/We will pay the DLR to the State Government & property Tax and other taxes to N.P.N. Durg regularly and will submit the receipt to the Bank.</p><p>15. ${p.I}/We undertake that ${p.I.toLowerCase()==='we'?'we':'I'} will not create any further charge during the pendency of the said loan.</p><p>16. That ${p.I}/We, ${names}, declare ${my} legal heirs as:</p><p>${heirRows}</p><p>Place: - ${esc(c.settings.branchName)}<br>Date: - ${fdate(c.mortgageDate)}</p><table class="signatureTable"><tr><th>Deponent</th><th>Signature</th></tr>${c.owners.map(o=>`<tr><td>${esc(o.name)}</td><td class="signatureCell"></td></tr>`).join('')}</table><p><b>VERIFICATION</b></p><p>Verified at ${esc(c.settings.branchName)} on __________ for the contents of the above affidavit are true to the best of my/our knowledge, no part of it is false and nothing material has been concealed there from.</p><table class="signatureTable"><tr><th>Witness</th><th>Deponent</th></tr><tr><td class="signatureCell"></td><td class="signatureCell"></td></tr></table></div>`}
+function displayTime12(v){
+ if(!v)return '';
+ const m=String(v).match(/^(\d{1,2}):(\d{2})(?:\s*([AaPp][Mm]))?$/);
+ if(!m)return String(v);
+ let h=Number(m[1]),mm=m[2],ap=m[3]?m[3].toUpperCase():null;
+ if(!ap){ap=h>=12?'PM':'AM';h=h%12||12;}
+ return `${String(h).padStart(2,'0')}:${mm} ${ap}`;
+}
+function annexA(c){
+ let dt=activeDate(c),tm=displayTime12(activeTime(c));
+ let borrowerText=borrowerNameList(c);
+ let rows=c.owners.map((o,i)=>`<tr><td>${i+1}</td><td>${esc(o.name)}<br>(Mortgagor)</td><td class="photoCell"></td><td class="sigbox"></td></tr>`).join('');
+ rows+=`<tr><td>${c.owners.length+1}</td><td>Name:<br>${esc(c.settings.branchManager)}<br>Branch Manager</td><td class="staffPhotoCell"></td><td class="sigbox"></td></tr><tr><td>${c.owners.length+2}</td><td>Name:<br>${esc(c.settings.processingOfficer)}<br>Processing/Credit Officer</td><td class="staffPhotoCell"></td><td class="sigbox"></td></tr>`;
+ const fs=activeFacilities(c);
+ const facilityParts=fs.map(f=>`${esc(String(f.name||'').trim())} of Rs. ${fmt(f.amount)}/- (Rupees ${numToIndianWords(normalizeFacilityAmount(f.amount))} Only)`);
+ const aggregate=fs.reduce((sum,f)=>sum+normalizeFacilityAmount(f.amount),0);
+ const facilityText=facilityParts.length===1?facilityParts[0]:`${facilityParts.join(' & ')}; aggregate total (sum of the above facilities): Rs. ${fmt(aggregate)}/- (Rupees ${numToIndianWords(aggregate)} Only)`;
+ return `<h2>Annexure A</h2><p>Branch: Khursipar Bhilai<br>Date: ${fdate(dt)}</p><p>The following persons attended the office of Bank of Baroda Khursipar Bhilai Branch on ${fdate(dt)} ${esc(tm)} the time of creation of Equitable Mortgage by deposit of title deeds/construction delivery to secure the following facility/facilities: ${facilityText}, sanctioned to ${esc(borrowerText)} by Bank of Baroda, Khursipar Bhilai.</p><table class="annexPhotoTable"><colgroup><col style="width:8%"><col><col class="photoCol"><col class="signatureCol"></colgroup><tr><th>S. No</th><th>Name and Designation</th><th class="photoCol">Photograph</th><th class="signatureCol">Signature</th></tr>${rows}</table>`;
+}
+
+function annexB(c){
+ let x=eventExt(),dt=x?.date||c.mortgageDate,tm=displayTime12(x?.time||c.mortgageTime),fs=x?.facilities||c.facilities;
+ const names=esc(mortNames(c));
+ const amount=fmt(total(fs));
+ const propertyAddress=esc(String(c.propertyAddress||c.propertyDescription||'').trim());
+ return `<h2>ANNEXURE “B”</h2><p>I/We ${names}, hereby confirm and declare that I / We had called at your Khursipar Bhilai Branch on ${fdate(dt)} at ${esc(tm)} at the time creation/ extension of Equitable mortgage on ${fdate(dt)} by deposit/constructive delivery of title deeds documents evidences writing in relation to the immovable properties situated at ${propertyAddress} belonging to ${names}.</p><p class="annexBoundary"><b>Boundary Description</b><br><span style="white-space:pre-wrap">${esc(c.boundary)}</span></p><p>together with buildings and structures, immovable plant and machinery, fixtures and fittings more particularly described in the schedule hereunder written with an intention to create security thereon as and by way of equitable mortgage by deposit of title deeds as and by way of first / second charge in your favor for the due repayment discharge or redemption by me / us to Bank of Baroda Khursipar Bhilai of its various credit facilities Mortgage Loan of Rs. ${amount} together with interest, additional interest, penal interest, interest tax, Trustee’s Remuneration, costs, charges and expenses payable thereon schedule referred to above</p><p>I hereby further declare that I / We am / are entitled to create the aforesaid equitable mortgage in my personal capacity as ${names}.</p><table><tr><th>Sr. No</th><th>Name and designation</th><th>Signature</th></tr>${c.owners.map((o,i)=>`<tr><td>${i+1}</td><td>${esc(o.name)}</td><td class="signatureCell"></td></tr>`).join('')}</table><p>Date: ${fdate(dt)}<br>Place: Khursipar Bhilai</p>`;
+}
+function undertakingRows(c){return c.owners.map((o,i)=>`<tr><td>${i+1}</td><td>${esc(o.name)}</td><td class="signatureCell"></td></tr>`).join('')}
+function undertakingOriginal(c){let p=jointPronouns(c),names=esc(jointNames(c)),fs=activeFacilities(c);return `<div class="document"><div class="title center">LETTER OF UNDERTAKING</div><p class="center">(To be obtained from all mortgagors)</p><p class="center">(Unstamped)</p><p>${p.plural?'We':'I/We'}, ${names} hereby confirm and declare that ${p.we} have executed the mortgage by depositing the title deeds, documents, evidences and writings by actual/constructive delivery in relation to the immovable ${p.plural?'properties':'property'} ${esc(c.propertyDescription)}, together with buildings and structures, immovable plant and machinery, fixtures and fittings more particularly described in the schedule hereunder written, with an intention to create security thereon as and by way of mortgage by deposit of title deeds and as and by way of first/second charge in your favour for the due repayment, discharge or redemption to Bank of Baroda by ${p.me}, ${p.plural?'inhabitants reside':'inhabitant resides'} at ${esc(c.address)}, of aggregating loan facilities of Rs. ${fmt(total(fs))}/-, together with interest, penal interest, Trustee's Remuneration, costs, charges and expenses payable thereon.</p><p class="facilityParagraph">${facilitySummary}</p><p>${p.plural?'We':'I/We'} hereby further declare that ${p.we} ${p.plural?'are':'am/are'} entitled to create the aforesaid Mortgage in ${p.my} personal ${p.plural?'capacities':'capacity'}.</p><p>${p.plural?'We':'I/We'} hereby further agree and declare that the provisions of Section 67A of the Transfer of Property Act, 1882, shall not apply to these presents and the Creditor/Debenture Trustee/Security Trustee, notwithstanding that the Creditor/Debenture Trustee/Security Trustee may hold two or more mortgages created by one and the same ${p.plural?'Mortgagors':'Mortgagor'}, including these presents, shall have the right to obtain the kinds of decrees under Section 67A of the Transfer of Property Act, 1882 and shall be entitled to sue on all such mortgages in respect of which the Mortgage Moneys shall have become due.</p><div class="schedule">SCHEDULE</div><div style="white-space:pre-wrap">${esc(c.propertyDescription)}</div><p>Boundary Description</p><div style="white-space:pre-wrap">${esc(c.boundary)}</div><table><tr><th>Sr. No.</th><th>Name of Mortgagors</th><th>Signature</th></tr>${undertakingRows(c)}</table><p>Date: ${fdate(c.mortgageDate)} &nbsp; Time: ${esc(c.mortgageTime)}</p></div>`}
+
+
+function annexC(c){let x=eventExt(),fs=activeFacilities(c),p=jointPronouns(c),names=esc(jointNames(c)),dt=x?.date||c.mortgageDate;
+ let cap=p.plural?'We':'I/We', sub=p.plural?'we':'I/We', obj=p.plural?'us':'me/us', mort=names;
+ return `<div class="document"><div class="title center">FOR EQUITABLE MORTGAGE</div><div class="title center">(Unstamped)</div><div class="title center">ANNEXURE – C</div><div class="title center">Letter of Undertaking</div><p class="center">(To be obtained from all mortgagors)</p><p>${cap}, ${mort} hereby declare that ${sub} had created/extended by execution of Mortgage Deed/Indenture of Mortgage, constructive delivery deposited the title deeds, documents evidences and writings in relation to the immovable properties situated at ${esc(c.address)} together with buildings and structures, immovable plant and machinery, fixtures and fittings more particularly described in the Schedule hereunder written with intention to create security thereon as and by way of English/Equitable Mortgage/Mortgage by deposit of title deeds and by way of first/second charge in your favour for the due repayment/discharge or redemption by ${obj}/by ${mort} to Bank of Baroda of its various credit facilities, increase/additional facilities of ${facilitySummary} sanctioned to ${esc(borrowerNameList(c))} together with interest, penal interest, interest tax, as and if applicable, Trustee’s Remuneration, Costs charges and expenses payable there on.</p><p>${cap} hereby further agree and declare that the provisions of Sec. 67A of the Transfer of Property Act. 1882, shall not apply to these presents and the creditor/Debenture Trustee/Security Trustee may hold two or more mortgages created by the one and the same ${p.plural?'Mortgagors':'Mortgagor'}, including these presents, in respect of which the Creditor/Debenture Trustee/Security Trustee has the right to obtain the kinds of decrees under sect. 67A of the Transfer of Property Act. 1882 and shall be entitled to such and obtain such decree on any of such mortgages without being bound to sue on all such Mortgages in respect of which the Mortgage Moneys shall have become due.</p><div class="schedule">Schedule</div><p>${esc(c.propertyDescription)}</p><p>Boundaries of the property:</p><p style="white-space:pre-wrap">${esc(c.boundary)}</p><p>Date: ${fdate(dt)}<br>Place: ${esc(c.settings.branchName)}</p><table><tr><th>Sr. No.</th><th>Name of Mortgagors</th><th>Signature</th></tr>${c.owners.map((o,i)=>`<tr><td>${i+1}</td><td>${esc(o.name)}</td><td class="signatureCell"></td></tr>`).join('')}</table></div>`}
+
+
+function l90AFacilityTable(fs){
+ const rows=(Array.isArray(fs)?fs:[]).map(f=>`<tr><td>${esc(String(f.name||f.facilityName||f.facilityType||'').trim())}</td><td style="text-align:right">${(normalizeFacilityAmount(f.amount)/100000).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2})}</td></tr>`).join('');
+ return `<table class="facilityLimitTable"><thead><tr><th>Nature of facility</th><th>LIMIT (Rs. in lacs)</th></tr></thead><tbody>${rows||'<tr><td></td><td></td></tr>'}</tbody></table>`;
+}
+
+function l90AOne(c,m){let d=c.settings;let officers=`${esc(d.branchManager)}, Branch Manager & ${esc(d.processingOfficer)}, Credit Officer`;return header('LDOC 90(A)','MEMORANDUM OF ENTRY',"(In case of mortgage of individual's property)")+`<p>On ${fdate(c.mortgageDate)} Shri/Smt. ${esc(m.name)}, ${m.relation?esc(m.relation)+', ':''}Indian inhabitant residing at ${esc(c.address)} (hereinafter called "MORTGAGOR") attended the branch office of Bank of Baroda at ${esc(d.branchName)} (hereinafter called "BOB") and delivered to and deposited with ${officers}, acting for BOB, the documents of title, evidences, deeds and writings more particularly described in the First Schedule hereunder written in respect of the immovable properties belonging to the Mortgagor and more particularly described in the Second Schedule, with intent to create a mortgage by deposit of title deeds to secure on a first charge basis the due repayment and discharge to BOB for the below mentioned financial assistance to ${esc(borrowerNameList(c))}:</p>${facilityDetails(c.facilities)}<p>THE MORTGAGOR further stated that the said title deeds so deposited were the only documents of title relating to the said immovable properties in his/her possession, power and control and that he/she had a clear and marketable title to the said immovable properties.</p><p>The aforesaid deposit of title deeds was made by ${esc(m.name)}, the Mortgagor, in the presence of ${officers}, acting for BOB.</p>${schedule(c)}<p>Dated at ${esc(d.branchName)} this ${fdate(c.mortgageDate)}</p>${officerExecution(c)}<p><b>Note:</b> The borrower/depositor depositing title deeds with the Bank should not sign this memorandum. To be stamped, if so required, under the State Stamp Act.</p>`}
+function l90A(c){
+ let p=jointPronouns(c), names=esc(jointNames(c)), ident=esc(jointIdentity(c)), d=c.settings;
+ let relClause=(c.owners||[]).length===1 && c.owners[0].relation?` ${esc(c.owners[0].relation)},`:'';
+ return header('LDOC 90(A)','MEMORANDUM OF ENTRY',"(In case of mortgage of individual's property)")+
+ `<p>On ${fdate(c.mortgageDate)} ${ident}${relClause} Indian inhabitant${p.plural?'s':''} residing at ${esc(c.address)} (hereinafter called "${p.mort}") attended the branch office of Bank of Baroda at ${esc(d.branchName)} (hereinafter called "BOB") and delivered to and deposited with ${esc(d.branchManager)}, Branch Manager &amp; ${esc(d.processingOfficer)}, Credit Officer, acting for BOB, the documents of title, evidences, deeds and writings more particularly described in the First Schedule hereunder written (hereinafter called "the said title deeds") in respect of immovable properties belonging to ${p.plural?'the Mortgagors':'the Mortgagor'} and situated at ${esc(c.propertyDescription)} and more particularly described in the Second Schedule hereunder written both present &amp; future (hereinafter referred to as "the said immovable properties") with intent to create a mortgage by deposit of title deeds to secure on a first charge basis the due repayment and discharge to BOB for their below mentioned financial assistance to ${esc(borrowerNameList(c))} viz,</p>${l90AFacilityTable(activeFacilities(c))}<p>together with interest, additional interest, compound interest, further interest by way of liquidated damages, commitment charges, premia on prepayment or on redemption, costs, charges, expenses and other moneys payable under their Heads of Agreement/ Loan Agreements/ Letters of Sanction/ Memorandum of Terms and Conditions amended from time to time.</p><p>${p.plural?'THE MORTGAGORS further stated that the said title deeds so deposited were the only documents of title relating to the said immovable properties in their possession, power and control and that they had a clear and marketable title to the said immovable properties.':'THE MORTGAGOR further stated that the said title deeds so deposited were the only documents of title relating to the said immovable properties in his possession, power and control and that he had a clear and marketable title to the said immovable properties.'}</p><p>The aforesaid deposit of title deeds was made by ${names}, the ${p.owners.toLowerCase()}, in the presence of ${esc(d.branchManager)}, Branch Manager &amp; ${esc(d.processingOfficer)}, Credit Officer, acting for BOB.</p>${schedule90A(c)}<p>Dated at ${esc(d.branchName)} this ${fdate(c.mortgageDate)}</p>${officerExecution(c)}<p class="legalNoteAfterExecution"><b>Note:</b> The borrower depositing title deeds with the Bank should not sign the memorandum. To be stamped, if so required, under the State Stamp Act.</p>`;
+}
+
+function l90COne(c,m){
+ let borrower=esc(c.borrowerName), fs=activeFacilities(c), amt=fmt(total(fs)), docDate=activeDate(c);
+ return header('LDOC 90(C)','DECLARATION',"IN THE MATTER OF MORTGAGE BY DEPOSIT OF TITLE DEEDS IN RESPECT OF IMMOVABLES. (INDIVIDUAL'S PROPERTY)")+
+ `<p style="text-align:right"><b>STAMP AS AN AFFIDAVIT</b></p>
+ <p>I, ${esc(m.name)}, Son/ daughter/ wife of Shri ${esc(m.relation)}, Indian inhabitant, at present residing at ${esc(c.address)}, do hereby declare and say as follows :</p>
+ <p>1) I say that I am seized and possessed of or otherwise well and sufficiently entitled to the lands and other immovable properties, more particularly described in the schedule hereunder written, together with all buildings and structures thereon, both present and future (hereinafter referred to as the "said immovable properties").</p>
+ <p>2) I say that the said immovable properties are at present not mortgaged or charged to any one.</p>
+ <p>3) I further say that the said immovable properties, both present and future are now proposed to be mortgaged and charged to Bank of Baroda to secure the outstanding balances in respect of ${facilitySummary} availed by me/ M/s. ${borrowerNameList(c)} together with interest, additional interest, further interest by way of liquidated damages, compound interest, commitment charges, premia on prepayment or on redemption, guarantee commission, commission for Letters of Credit, cost, charges, expenses and other moneys payable by me/ M/s. ${borrowerNameList(c)} to Bank of Baroda under their Heads of agreement/Loan agreements/ Letters of sanction/Memorandum of terms and conditions, amended from time to time. The said Bank of Baroda is hereinafter referred to as “the Lenders".</p>
+ <p>4) I say that the Provisions of the Urban Land (Ceiling & Regulation) Act, 1976 are not applicable to the said property/ I have obtained necessary permission from the Competent Authority for mortgaging the said immovable properties.</p>
+ <p>5) I say that the said immovable properties are free from all encumbrances or charges (statutory or otherwise), claims and demands and that the same or any of them or any part thereof are/is not subject to any Lien, Lis pendens, attachment or any other process issued by any Court or Authority and that I have not created any Trust in respect thereof and that the said immovable properties are in my exclusive, uninterrupted and undisturbed possession and enjoyment since the date of purchase/ acquisition thereof and no adverse claims have been made against me in respect of the said immovable properties or any of them or any part thereof and the same are not affected by any notices of acquisition or requisition, and that no proceedings are pending or initiated against me under the Income - Tax Act, 1961, Public Demands Recovery Act, or under any other law in force in India for the time being and that no notice has been received by or served on me under Rules 2, 16, 21 and 51 of the Second Schedule to the Income - Tax Act, 1961 and/or under any other law and there is no pending attachment whatsoever issued or initiated against the said immovable properties or any of them or any part thereof.</p>
+ <p>6) I say I have duly paid all rents, royalties and all public demands including Income Tax, Corporation Tax and all other taxes and revenue payable to the Government of India or to the Government of any State or to any local authority and that at present there are no arrears of such dues, rents, royalties, taxes and revenue due and outstanding and that no attachments or warrants have been served on me.</p>
+ <p>7) I also agree and undertake to give such declarations, undertakings and other writings as may be required by the Lenders or their solicitors and satisfactorily comply with all other requirements and requisitions submitted by or on behalf of the Lenders.</p>
+ <p>8) I say that I have obtained the requisite consent from the Income-Tax authorities pursuant to the provisions contained in Section 281 of the Income-Tax Act, 1961 for the alienation of my properties in favour of the Lenders.</p>
+ <p>9) I assure, agree and declare that the security to be created in favour of the Lenders shall enure in respect of my immovable properties, both present and future and that the documents of title, evidences, deeds and writing in relation to the said immovable properties which are to be deposited with the Lenders for creating a mortgage by deposit of title deeds in their favour are the only documents of title relating to the said immovable properties.</p>
+ <p>10) I hereby agree and undertake that I will within a period of three months from the date hereof or such extended date as may be permitted by the Lenders in writing-</p>
+ <p style="margin-left:24px">A) perfectly assure the title to the properties comprised in the mortgage security and to comply with all requisitions, that may be made from time to time by or on behalf of the Lenders in that behalf;</p>
+ <p style="margin-left:24px">B) give such declarations, undertakings and other writings as may be required by the Lenders and satisfactorily comply with all other requirements and requisitions submitted by or on behalf of the Lenders;</p>
+ <p style="margin-left:24px">C) pay all rents, rates, taxes, cess, fees, revenue, assessments, duties and other out goings and pay other amounts due in respect of the said immovable properties and shall observe and perform all the rules and regulations pertaining to the same and will not do or omit to do or suffer to be done any thing whereby the mortgaged security as proposed to be created in favour of the Lenders be affected or prejudiced in any manner whatsoever.</p>
+ <p>11) I further undertake that no mortgage, charge, lien or other encumbrance whatsoever including by way of lease will be created on the properties comprised in the mortgage security save and except with the permission of the Lenders.</p>
+ <p>12) I am not aware of any act, deeds, matter or thing or circumstance which prevents me from charging/ further charging in favour of the Lenders the said immovable properties.</p>
+ <p>13) I / we hereby further agree and declare that the provisions of Sec. 67 A of the Transfer to Property Act, 1882 shall not apply to these presents and the creditor/ Debenture Trustee/ Security Trustee/ notwithstanding that the creditor/ Debenture Trustee/ Security Trustee may hold two or more mortgages created by the one and the same Mortgagor, including these presents, in respect of which the creditor/ Debenture Trustee/ Security Trustee has the right to obtain the kinds of decrees under Sec. 67 A of Transfer of Property Act, 1882 and shall be entitled to sue and obtain such decree on any of such mortgages without being bound to sue on all such Mortgages in respect of which the Mortgage Money shall have become due.</p>
+ <p>AND I make the aforesaid declaration solemnly and sincerely believing the same to be true and knowing full well that on the faith thereof the Lenders have agreed to complete the said transaction of mortgage by deposit of title deeds in respect of the said immovable properties as aforesaid.</p>
+ <div class="schedule">SCHEDULE</div><p>(Description of Immovable Property)</p><p>${esc(c.propertyDescription)}</p><p style="white-space:pre-wrap">${esc(c.boundary)}</p>
+ <p>Made at ${esc(c.settings.branchName)} this ${fdate(docDate)}</p>
+ <div class="sig"><span></span><span>(Signature of the Mortgagor)<br>${esc(m.name)}</span></div>
+ <p><b>Note:</b><br>The declaration to be got executed before a Presidency Magistrate or a Notary Public.</p>`;
+}
+function l90C(c){
+ let p=jointPronouns(c), names=esc(jointNames(c)), borrower=esc(c.borrowerName), amt=fmt(total(activeFacilities(c))), docDate=activeDate(c);
+ let one=c.owners.length===1;
+ let opening=one?`I, ${names}, ${c.owners[0].relation?esc(c.owners[0].relation)+', ':''}Indian inhabitant, at present residing at ${esc(c.address)}, do hereby declare and say as follows :`:`We, ${names}, Indian inhabitants, at present residing at ${esc(c.address)}, do hereby declare and say as follows :`;
+ let s1=one?'I say that I am seized and possessed of or otherwise well and sufficiently entitled':'We say that we are seized and possessed of or otherwise well and sufficiently entitled';
+ let s2=one?'I say that':'We say that';
+ let s3=one?'I further say that':'We further say that';
+ let s4=one?'I say that the Provisions':'We say that the Provisions';
+ let s5=one?'I say that the said':'We say that the said';
+ let s6=one?'I say I have duly paid':'We say we have duly paid';
+ let s7=one?'I also agree and undertake':'We also agree and undertake';
+ let s8=one?'I say that I have obtained':'We say that we have obtained';
+ let s9=one?'I assure, agree and declare that':'We assure, agree and declare that';
+ let s10=one?'I hereby agree and undertake that I will':'We hereby agree and undertake that we will';
+ let s11=one?'I further undertake that no':'We further undertake that no';
+ let s12=one?'I am not aware of any':'We are not aware of any';
+ let s13=one?'I hereby further agree and declare that':'We hereby further agree and declare that';
+ let concl=one?'AND I make the aforesaid declaration solemnly and sincerely believing the same to be true':'AND WE make the aforesaid declaration solemnly and sincerely believing the same to be true';
+ let sig=one?`<div class="sig"><span></span><span>(Signature of the Mortgagor)<br>${names}</span></div>`:`<table><tr><th>Sr. No.</th><th>Name of Mortgagors</th><th>Signature</th></tr>${c.owners.map((o,i)=>`<tr><td>${i+1}</td><td>${esc(o.name)}</td><td class="signatureCell"></td></tr>`).join('')}</table>`;
+ return header('LDOC 90(C)','DECLARATION',"IN THE MATTER OF MORTGAGE BY DEPOSIT OF TITLE DEEDS IN RESPECT OF IMMOVABLES. (INDIVIDUAL'S PROPERTY)")+`<p style="text-align:right"><b>STAMP AS AN AFFIDAVIT</b></p><p>${opening}</p>
+ <p>1) ${s1} to the lands and other immovable properties, more particularly described in the schedule hereunder written, together with all buildings and structures thereon, both present and future (hereinafter referred to as the "said immovable properties").</p>
+ <p>2) ${s2} the said immovable properties are at present not mortgaged or charged to any one.</p>
+ <p>3) ${s3} the said immovable properties, both present and future are now proposed to be mortgaged and charged to Bank of Baroda to secure the outstanding balances in respect of ${facilitySummary} availed by ${one?'me':'us'}/ M/s. ${borrowerNameList(c)} together with interest, additional interest, further interest by way of liquidated damages, compound interest, commitment charges, premia on prepayment or on redemption, guarantee commission, commission for Letters of Credit, cost, charges, expenses and other moneys payable by ${one?'me':'us'}/ M/s. ${borrowerNameList(c)} to Bank of Baroda under their Heads of agreement/Loan agreements/ Letters of sanction/Memorandum of terms and conditions, amended from time to time. The said Bank of Baroda is hereinafter referred to as “the Lenders".</p>
+ <p>4) ${s4} are not applicable to the said property/ We have obtained necessary permission from the Competent Authority for mortgaging the said immovable properties.</p>
+ <p>5) ${s5} immovable properties are free from all encumbrances or charges (statutory or otherwise), claims and demands and that the same or any of them or any part thereof are/is not subject to any Lien, Lis pendens, attachment or any other process issued by any Court or Authority and that ${one?'I have':'we have'} not created any Trust in respect thereof and that the said immovable properties are in ${one?'my':'our'} exclusive, uninterrupted and undisturbed possession and enjoyment since the date of purchase/ acquisition thereof and no adverse claims have been made against ${one?'me':'us'} in respect of the said immovable properties or any of them or any part thereof and the same are not affected by any notices of acquisition or requisition, and that no proceedings are pending or initiated against ${one?'me':'us'} under the Income - Tax Act, 1961, Public Demands Recovery Act, or under any other law in force in India for the time being and that no notice has been received by or served on ${one?'me':'us'} under Rules 2, 16, 21 and 51 of the Second Schedule to the Income - Tax Act, 1961 and/or under any other law and there is no pending attachment whatsoever issued or initiated against the said immovable properties or any of them or any part thereof.</p>
+ <p>6) ${s6} all rents, royalties and all public demands including Income Tax, Corporation Tax and all other taxes and revenue payable to the Government of India or to the Government of any State or to any local authority and that at present there are no arrears of such dues, rents, royalties, taxes and revenue due and outstanding and that no attachments or warrants have been served on ${one?'me':'us'}.</p>
+ <p>7) ${s7} to give such declarations, undertakings and other writings as may be required by the Lenders or their solicitors and satisfactorily comply with all other requirements and requisitions submitted by or on behalf of the Lenders.</p>
+ <p>8) ${s8} the requisite consent from the Income-Tax authorities pursuant to the provisions contained in Section 281 of the Income-Tax Act, 1961 for the alienation of ${one?'my':'our'} properties in favour of the Lenders.</p>
+ <p>9) ${s9} the security to be created in favour of the Lenders shall enure in respect of ${one?'my':'our'} immovable properties, both present and future and that the documents of title, evidences, deeds and writing in relation to the said immovable properties which are to be deposited with the Lenders for creating a mortgage by deposit of title deeds in their favour are the only documents of title relating to the said immovable properties.</p>
+ <p>10) ${s10} within a period of three months from the date hereof or such extended date as may be permitted by the Lenders in writing-</p>
+ <p style="margin-left:24px">A) perfectly assure the title to the properties comprised in the mortgage security and to comply with all requisitions, that may be made from time to time by or on behalf of the Lenders in that behalf;</p><p style="margin-left:24px">B) give such declarations, undertakings and other writings as may be required by the Lenders and satisfactorily comply with all other requirements and requisitions submitted by or on behalf of the Lenders;</p><p style="margin-left:24px">C) pay all rents, rates, taxes, cess, fees, revenue, assessments, duties and other out goings and pay other amounts due in respect of the said immovable properties and shall observe and perform all the rules and regulations pertaining to the same and will not do or omit to do or suffer to be done any thing whereby the mortgaged security as proposed to be created in favour of the Lenders be affected or prejudiced in any manner whatsoever.</p>
+ <p>11) ${s11} mortgage, charge, lien or other encumbrance whatsoever including by way of lease will be created on the properties comprised in the mortgage security save and except with the permission of the Lenders.</p>
+ <p>12) ${s12} act, deeds, matter or thing or circumstance which prevents ${one?'me':'us'} from charging/ further charging in favour of the Lenders the said immovable properties.</p>
+ <p>13) ${s13} the provisions of Sec. 67 A of the Transfer to Property Act, 1882 shall not apply to these presents and the creditor/ Debenture Trustee/ Security Trustee/ notwithstanding that the creditor/ Debenture Trustee/ Security Trustee may hold two or more mortgages created by the one and the same ${one?'Mortgagor':'Mortgagors'}, including these presents, in respect of which the creditor/ Debenture Trustee/ Security Trustee has the right to obtain the kinds of decrees under Sec. 67 A of Transfer of Property Act, 1882 and shall be entitled to sue and obtain such decree on any of such mortgages without being bound to sue on all such Mortgages in respect of which the Mortgage Money shall have become due.</p>
+ <p>${concl} and knowing full well that on the faith thereof the Lenders have agreed to complete the said transaction of mortgage by deposit of title deeds in respect of the said immovable properties as aforesaid.</p>
+ <div class="schedule">SCHEDULE</div><p>(Description of Immovable Property)</p><p>${esc(c.propertyDescription)}</p><p style="white-space:pre-wrap">${esc(c.boundary)}</p><p>Made at ${esc(c.settings.branchName)} this ${fdate(docDate)}</p>${sig}<p><b>Note:</b><br>The declaration to be got executed before a Presidency Magistrate or a Notary Public.</p>`;
+}
+
+function l90D(c){let p=jointPronouns(c),names=esc(jointNames(c)),fs=activeFacilities(c),dt=activeDate(c);return header('LDOC 90(D)','LETTER OF CONFIRMATION OF MORTGAGE','(In respect of Personal Property)')+`${metadataHeaderBlock(c,dt)}<p>Dear Sirs,</p><p><b>Re: ${facilitySummary}</b></p><p>${p.I} confirm that as already agreed upon, ${p.we} have called at the Office of Bank of Baroda, ${esc(c.settings.branchName)} and deposited the documents of title, deeds, evidences, documents and writings in respect of ${p.my} immovable ${p.plural?'properties':'property'} more fully described in the Schedule hereunder, with an intent to create a security by way of mortgage by deposit of title deeds on a First Charge Basis for the due repayment, discharge and redemption by ${p.me} ${esc(borrowerNameList(c))} to Bank of Baroda of ${facilitySummary}, together with interest, costs, charges, expenses and other moneys payable thereon.</p><div class="schedule">SCHEDULE</div><p>${esc(c.propertyDescription)}</p><p style="white-space:pre-wrap">${esc(c.boundary)}</p>${p.plural?`<table><tr><th>Mortgagor</th><th>Signature</th></tr>${c.owners.map(o=>`<tr><td>${esc(o.name)}</td><td class="signatureCell"></td></tr>`).join('')}</table>`:`<div class="sig"><span></span><span>(Signature of the Mortgagor)<br>${names}</span></div>`}`}
+
+
+function extSummary(c,x){let orig=total(c.facilities),inc=total(x?.facilities||[]);return {orig,inc,revised:orig+inc}}
+function l90K(c){
+ let x=eventExt(),mNames=esc(jointNames(c)),d=c.settings;
+ let plural=c.owners.length>1,mortLabel='Mortgagor'+(plural?'s':'');
+ let origFacs=c.facilities||[],extFacs=x?.facilities||[];
+
+ // Per-facility increase lines for the oral-confirmation paragraph
+ let increaseLines=extFacs.map(f=>{
+  let prev=normalizeFacilityAmount(f._previousLimit);
+  if(!prev){const o=origFacs.find(o=>o.name===f.name);if(o)prev=normalizeFacilityAmount(o.amount);}
+  let inc=normalizeFacilityAmount(f.amount),revised=prev+inc;
+  return prev>0
+   ?`${esc(f.name)} limit of Rs. ${fmt(inc)}/- (limit increased from Rs. ${fmt(prev)}/- to Rs. ${fmt(revised)}/-)`
+   :`new ${esc(f.name)} limit of Rs. ${fmt(inc)}/-`;
+ }).join('; ');
+ let totalInc=extFacs.reduce((a,f)=>a+normalizeFacilityAmount(f.amount),0);
+
+ // Revised limits table — original unchanged + enhanced/new from extension
+ const extMap=new Map(extFacs.map(f=>[f.name,f]));
+ const revisedFacs=[];
+ origFacs.forEach(f=>{
+  const ef=extMap.get(f.name);
+  if(ef){let prev=normalizeFacilityAmount(ef._previousLimit)||normalizeFacilityAmount(f.amount);revisedFacs.push({name:f.name,amount:prev+normalizeFacilityAmount(ef.amount)});}
+  else revisedFacs.push({name:f.name,amount:normalizeFacilityAmount(f.amount)});
+ });
+ extFacs.forEach(f=>{if(!origFacs.find(o=>o.name===f.name))revisedFacs.push({name:f.name,amount:normalizeFacilityAmount(f.amount)});});
+ let revisedTotal=revisedFacs.reduce((a,f)=>a+f.amount,0);
+ let revisedRows=revisedFacs.map((f,i)=>`<tr><td>${i+1}. ${esc(f.name)}</td><td style="text-align:right">${(f.amount/100000).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2})}</td></tr>`).join('');
+ let revisedTable=`<p><b>(STATE ALL THE REVISED LIMITS) (RS. IN LACS)</b></p><table class="facilityLimitTable"><thead><tr><th>Nature of Facility</th><th>Revised Limit (Rs. in lacs)</th></tr></thead><tbody>${revisedRows}</tbody></table><p>aggregating Rs. ${fmt(revisedTotal)}/- (Rupees ${numToIndianWords(revisedTotal)} Only) together with interest, compound interest and or additional interest in case of default, penal interest, liquidated damages, commitment charges, premia on prepayment or on redemption, guarantee commission, costs, charges, expenses and other moneys payable by ${plural?'them':'him/her'}/M/s. ${esc(borrowerNameList(c))} to the Bank under its Heads of Agreements/Loan Agreements/Letters of Sanction and Memorandum of terms and conditions as amended from time to time.</p>`;
+
+ // Third Schedule paragraph and block (only if data present)
+ let thirdPara='',thirdBlock='';
+ if(x?.thirdSchedule){
+  thirdPara=`<p>On the same day, ${mNames} further deposited with ${esc(d.branchManager)}, Branch Manager of the Bank, acting for the Bank, further documents, evidences, consents and permissions, more particularly described in the Third Schedule hereunder written in respect of the said immovable properties as security in favour of the Bank as aforesaid.</p><p>${esc(d.branchManager)}, Branch Manager of the Bank, acting for the Bank accepted the deposit of the said title deeds, when ${esc(d.processingOfficer)}, Credit Officer of the Bank was also present.</p>`;
+  thirdBlock=`<div class="schedule">THIRD SCHEDULE ABOVE REFERRED TO</div><div class="scheduleDetails">(List of documents, evidences, consents, and permissions now deposited with the Bank)</div><div class="scheduleDetails" style="white-space:pre-wrap">${esc(x.thirdSchedule)}</div>`;
+ }
+
+ return header('LDOC 90(K)','SUPPLEMENTAL MEMORANDUM OF ENTRY',"Extension of mortgage by deposit of title deeds — Individual's property")+
+  `<p>On ${fdate(x?.date)} at ${esc(displayTime12(x?.time||''))} ${mNames}, Indian inhabitant${plural?'s':''} residing at ${esc(c.address)} (hereinafter called "the ${mortLabel}") attended the branch office of Bank of Baroda at ${esc(d.branchName)} (hereinafter called "BOB") and saw ${esc(d.branchManager)}, Branch Manager of BOB.</p>`+
+  `<p>The said ${mNames} stated that the documents of title, evidences, deeds and writings more particularly described in the First Schedule hereunder written in respect of ${plural?'their':'his/her'} immovable properties situate at ${esc(c.propertyDescription)} more particularly described in the Second Schedule hereunder written together with all buildings and structures thereon both present and future (hereinafter collectively referred to as "the said immovable properties") were deposited on ${fdate(c.mortgageDate)} by ${plural?'them':'him/her'} with BOB with an intent to create a security by way of mortgage by deposit of title deeds on the said immovable properties for securing the due repayment, discharge and redemption by ${plural?'them':'him/her'} as principal borrower/guarantor to the account of M/s. ${esc(borrowerNameList(c))} to Bank of Baroda for its/their below mentioned financial assistance:</p>`+
+  l90AFacilityTable(origFacs)+
+  `<p>together with interest, additional interest, compound interest, further interest by way of liquidated damages, commitment charges, premia on prepayment or on redemption, guarantee commission, commission for Letters of Credit, costs, charges, expenses and other moneys payable under their Heads of Agreement/Loan Agreements/Letters of Sanction/Memorandum of Terms and Conditions amended from time to time.</p>`+
+  `<p>${mNames} on the same day, further orally confirmed to the said ${esc(d.branchManager)}, Branch Manager of the Bank, that the mortgage created by ${plural?'them':'him/her'} on ${fdate(c.mortgageDate)} by deposit of title deeds in respect of the said immovable properties shall be extended as and by way of further mortgage by deposit of title deeds by constructive delivery so as to be a continuing security for the due repayment of the increase in ${increaseLines} aggregating Rs. ${fmt(totalInc)}/- (Rupees ${numToIndianWords(totalInc)} Only) together with interest, compound interest and/or additional interest, costs, charges and expenses and the existing mortgage together with the further mortgage created hereunder shall henceforth be a continuing security to the Bank for due repayment, discharge and redemption by ${plural?'them':'him/her'} as principal borrower/guarantor to the Bank for its:</p>`+
+  revisedTable+
+  thirdPara+
+  `<div class="pagebreak"></div><div class="schedule">THE FIRST SCHEDULE ABOVE REFERRED TO</div><div class="scheduleDetails">(List of documents of title, evidences and deeds lying deposited with the Bank)</div><div class="scheduleDetails" style="white-space:pre-wrap">${esc(c.firstSchedule)}</div>`+
+  `<div class="schedule">SECOND SCHEDULE ABOVE REFERRED TO</div><div class="scheduleDetails">(Description of the immovable property)</div><p class="scheduleDetails">${esc(c.propertyDescription)}</p><p class="scheduleDetails"><b>Boundary Description</b><br><span style="white-space:pre-wrap">${esc(c.boundary)}</span></p>`+
+  thirdBlock+
+  `<p style="margin-top:50pt">Dated at ${esc(d.branchName)} this ${fdate(x?.date)}</p>`+
+  `<div style="margin-top:40pt;display:flex;justify-content:space-between;font-size:11pt"><div style="width:40%;border-top:1px solid #000;padding-top:6pt;text-align:center">Signature of Mortgagor${c.owners.length>1?'s':''}<br>${mNames}</div><div style="width:40%"></div></div>`+
+  `<div style="margin-top:70pt"></div>`+
+  officerExecution(c)+
+  `<p style="margin-top:20pt"><b>Note:</b> To be stamped, if so required under the State Stamp Act.</p>`;
+}
+function l90L(c){let x=eventExt(),mNames=esc(jointNames(c));return header('LDOC 90(L)','SECOND EXTENSION OF MORTGAGE BY DEPOSIT OF TITLE DEEDS',"(Individual's property)")+`<p>On ${fdate(x?.date)} at ${esc(x?.time||'')} ${mNames}, Mortgagor${c.owners.length>1?'s':''}, attended Bank of Baroda, ${esc(c.settings.branchName)} Branch in connection with the second extension of the mortgage by deposit of title deeds originally created on ${fdate(c.mortgageDate)}.</p><p>The Mortgagor orally confirmed continuation and extension of the mortgage security to secure the further/enhanced facilities:</p><p class="facilityParagraph">${facilitySummary}</p>${schedule(c)}<p>Dated at ${esc(c.settings.branchName)} this ${fdate(x?.date)}</p>${officerExecution(c)}`}
+function metadataHeaderBlock(c, dt) {
+    return `<div class="metadataHeaderBlock"><div class="metadataLine"><strong>UNSTAMPED</strong></div><div class="metadataLine">Date: ${fdate(dt)}</div><div class="metadataLine">Bank of Baroda,</div><div class="metadataLine">${esc(c.settings.branchName)} Branch,</div></div><div class="clearBeforeSalutation"></div>`;
+}
+
+function l90J(c){
+ let x=eventExt(),isExt=$('mortgageEvent').value!=='original',dt=isExt?(x?.date||''):c.mortgageDate;
+ let fs=isExt?(x?.facilities||[]):c.facilities, action=isExt?'extended':'created', delivery=isExt?'constructive':'actual', hold=isExt?'continue to hold':'hold';
+ return header('LDOC 90(J)','CONFIRMATION OF CREATION/ EXTENSION* OF MORTGAGE','BY JOINT OWNERS')+
+ `${metadataHeaderBlock(c,dt)}<p>Dear Sirs,</p>
+ <p>Re: Confirmation of creation / extension of mortgage<br>Availed by ${esc(borrowerNameList(c))}.</p>
+ <p>We, ${esc(mortNames(c))}, Joint Owners of the properties mentioned in schedule below, confirm that as already agreed upon, We have on ${fdate(dt)} (date), ${action} the mortgage by deposit of title deeds as and by way of ${delivery} delivery by giving an oral consent/ assent to the Bank to ${hold} the said title deeds, evidences, documents and writings in respect of our immovable properties together with buildings and structures thereon and fixtures and fittings both present and future (more fully described in the Schedule hereunder) with an intent to create a security by way of mortgage by deposit of title deeds on a First Charge Basis over the said immovable properties for the due repayment, redemption and discharge by us ${esc(borrowerNameList(c))} to Bank of Baroda of its various credit facilities, ${facilitySummary}, together with interest, cost, charges, expenses and other moneys payable thereon.</p>
+ <div class="schedule">SCHEDULE</div><p>(Description of immovable properties)</p><p>${esc(c.propertyDescription)}</p><p style="white-space:pre-wrap">${esc(c.boundary)}</p>
+ <table><tr><th>Joint Owner</th><th>Signature</th></tr>${c.owners.map(o=>`<tr><td>${esc(o.name)}</td><td class="signatureCell"></td></tr>`).join('')}</table>
+ <p>(To be signed by all the Joint Owners)<br>(*) Delete whichever is not applicable.</p>`;
+}
+function l90P(c){let x=eventExt(),isExt=$('mortgageEvent').value!=='original',dt=isExt?(x?.date||''):c.mortgageDate,fs=isExt?(x?.facilities||[]):c.facilities;return header('LDOC 90(P)','LETTER OF CONFIRMATION OF CREATION / EXTENSION OF MORTGAGE')+`<p>Date: ${fdate(dt)}<br>Place: ${esc(c.settings.branchName)}</p><p>Bank of Baroda,<br>${esc(c.settings.branchName)} Branch.</p><p>Dear Sirs,</p><p>I/We ${esc(mortNames(c))} confirm that the mortgage by deposit of title deeds over the immovable property described in the Schedule below has been ${isExt?'extended':'created'} in favour of Bank of Baroda to secure the credit facilities of ${esc(borrowerNameList(c))}: ${facilitySummary}, together with interest, costs, charges, expenses and other moneys payable thereon.</p><div class="schedule">SCHEDULE</div><p>${esc(c.propertyDescription)}</p><p style="white-space:pre-wrap">${esc(c.boundary)}</p><table><tr><th>Mortgagor</th><th>Signature</th></tr>${c.owners.map(o=>`<tr><td>${esc(o.name)}</td><td class="signatureCell"></td></tr>`).join('')}</table>`}
+function l92(c){
+ let dep=c.owners[c.depositor]||c.owners[0],others=c.owners.filter((_,i)=>i!==c.depositor),isExt=$('mortgageEvent').value!=='original';
+ let fs=isExt?(eventExt()?.facilities||[]):c.facilities;
+ return header('LDOC 92','LETTER OF AUTHORITY FOR CREATION /EXTENSION OF MORTGAGE.')+
+ `<p><b>UNSTAMPED</b><br>Date: ${fdate(isExt?(eventExt()?.date||''):c.mortgageDate)}</p><p>Bank of Baroda<br>${esc(c.settings.branchName)} Branch,</p><p>Dear Sir,</p>
+ <p>Re: ${facilitySummary}<br>availed by Mr./ Ms./ M/s ${esc(borrowerNameList(c))}</p>
+ <p>I/ We, ${esc(others.map(o=>o.name).join(' and '))} joint borrower(s)/ partners of M/s. ${esc(borrowerNameList(c))} do hereby jointly and severally authorise Shri/ Smt. ${esc(dep?.name||'')} to call at the branch of Bank of Baroda and deliver and deposit the title deeds to ${isExt?'extend the mortgage':'create a mortgage'} by deposit of title deeds by ${isExt?'constructive':'actual'} delivery in respect of immovable properties belonging to us jointly/the firm and situated at ${esc(c.propertyDescription)} as security for the facilities/additional facilities ${facilitySummary} sanctioned to Mr./ Ms./ M/s ${esc(borrowerNameList(c))} repayable together with interest, costs, charges and expenses payable thereon.</p>
+ <p>Signature/s</p><table><tr><th>Authorising person</th><th>Signature</th></tr>${others.map(o=>`<tr><td>${esc(o.name)}</td><td class="signatureCell"></td></tr>`).join('')}</table>`;
+}
+function companyGeneric(c,code,title){let x=eventExt(),isExt=$('mortgageEvent').value!=='original',dt=isExt?(x?.date||''):c.mortgageDate,fs=isExt?(x?.facilities||[]):c.facilities;return header('LDOC '+code,title,"(Company / firm property — source-controlled family)")+`<p>On ${fdate(dt)}, the duly authorised representative of ${esc(borrowerNameList(c))} attended Bank of Baroda, ${esc(c.settings.branchName)} Branch in connection with the ${isExt?'extension':'creation'} of mortgage over the property described below.</p><p class="facilityParagraph">${facilitySummary}</p>${schedule(c)}<p>The authorised representative confirms that the act is done for and on behalf of the owner entity under valid authority/resolution and that the security shall secure the facilities stated above, subject to the terms of the approved specimen.</p>${officerExecution(c)}<div class="warn">RC1 control: company/firm renderer preserves the correct LDOC family/routing but must be compared line-by-line with the supplied specimen before operational use.</div>`}
+function boldUserDataInDocument(html,c){
+ const vals=[]; const add=v=>{if(v===null||v===undefined)return;const x=String(v).trim();if(x.length>=2)vals.push(x)};
+ [c.borrowerName,c.cif,c.address,c.propertyDescription,c.boundary,c.firstSchedule,c.mortgageDate,fdate(c.mortgageDate),displayTime12(c.mortgageTime),c.settings?.branchName,c.settings?.branchCode,c.settings?.branchManager,c.settings?.processingOfficer].forEach(add);
+ (c.owners||[]).forEach(o=>[o.name,o.relation,o.share].forEach(add));
+ [...(c.facilities||[]),...(activeFacilities(c)||[])].forEach(f=>{[f.name,f.facilityName,f.facilityType,f.amount,fmt(f.amount),numToIndianWords(normalizeFacilityAmount(f.amount))].forEach(add)});
+ (c.legalHeirs||[]).forEach(h=>[h.name,h.relation].forEach(add));
+ const x=eventExt();(x?.facilities||[]).forEach(f=>[f.name,f.facilityName,f.facilityType,f.amount,fmt(f.amount)].forEach(add));
+ const unique=[...new Set(vals)].sort((a,b)=>b.length-a.length);
+ const root=document.createElement('div');root.innerHTML=html;
+ const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
+ for(const node of nodes){let text=node.nodeValue;if(!text.trim())continue;let changed=false;const frag=document.createDocumentFragment();let cursor=0;
+  while(cursor<text.length){let best=-1,bestVal='';for(const val of unique){const idx=text.indexOf(val,cursor);if(idx>=0&&(best<0||idx<best||(idx===best&&val.length>bestVal.length))){best=idx;bestVal=val}}if(best<0){frag.appendChild(document.createTextNode(text.slice(cursor)));break}if(best>cursor)frag.appendChild(document.createTextNode(text.slice(cursor,best)));const strong=document.createElement('strong');strong.textContent=bestVal;frag.appendChild(strong);cursor=best+bestVal.length;changed=true;}
+  if(changed)node.parentNode.replaceChild(frag,node);
+ }
+ return root.innerHTML;
+}
+
+
+function runRC13RegressionAudit(){
+ const report={};
+ const sample={caseId:'RC13-TEST',borrowers:[{name:'Borrower One'}],borrowerName:'Borrower One',address:'Borrower Residence',propertyAddress:'House No. HIG-17, Jainam Vihar, Raipur',propertyDescription:'Plot 17, Jainam Vihar, Raipur',boundary:'North: Road\nSouth: Plot 16\nEast: Lane\nWest: Road',firstSchedule:'Title deed dated 01-01-2020',mortgageDate:'2026-10-11',mortgageTime:'10:30',owners:[{name:'Mr. Suresh Ruprela'},{name:'Mrs. Kalpana Ruprela'}],propertyType:'joint',jointMode:'all',depositor:0,facilities:[{name:'Home Loan',amount:1590458},{name:'Baroda Flexi Loan Over Home Security',amount:2600000}],legalHeirs:[],settings:{branchName:'Khursipar Bhilai',branchManager:'Mrs. Shweta Singh',processingOfficer:'Mr. Ayub Qureshi',branchAddress:''}};
+ try{
+  const b=annexB(sample);
+  report.annexBUsesPropertyAddress=b.includes('situated at House No. HIG-17, Jainam Vihar, Raipur belonging to Mr. Suresh Ruprela, Mrs. Kalpana Ruprela');
+  report.annexBCommaSpacing=b.includes('Mrs. Kalpana Ruprela, hereby confirm');
+  report.annexBBoundaryParagraph=b.includes('class="annexBoundary"')&&b.indexOf('class="annexBoundary"')<b.indexOf('together with buildings');
+  const oldEvent=$('mortgageEvent').value,oldExt=$('eventExtension').value;
+  $('mortgageEvent').value='original';$('eventExtension').value='';prepareCompilationContext(sample);
+  const j=l90J(sample);
+  report.l90JFacilityTextExactlyOnce=(j.match(/Home Loan of Rs\. 15,90,458/g)||[]).length===1 && !j.includes('class="facilityParagraph"');
+  report.l90JScheduleAfterBody=j.indexOf('SCHEDULE')>j.indexOf('due repayment, redemption and discharge');
+  const a=l90A(sample);
+  report.l90ANoteHasBuffer=a.includes('class="legalNoteAfterExecution"');
+  report.officerSignatureBlockPrecedesNote=a.indexOf('class="officerExec"')<a.indexOf('class="legalNoteAfterExecution"');
+  report.noArchaicSituateAt=!new RegExp('situ'+'ate at','i').test(a+b+j);
+  $('mortgageEvent').value=oldEvent;$('eventExtension').value=oldExt;
+ }catch(e){report.error=String(e.stack||e)}
+ report.PASS=Object.values(report).every(v=>v===true);
+ return report;
+}
+
+function generate(code){if(!validate())return;if($('mortgageEvent').value!=='original'&&!eventExt())return alert('Select the saved extension for this mortgage event.');let c=getCase();prepareCompilationContext(c);let h='';switch(code){case'annA':h=annexA(c);break;case'annB':h=annexB(c);break;case'annC':h=annexC(c);break;case'undertaking':h=undertakingOriginal(c);break;case'affidavit':h=affidavit(c);break;case'90A':h=l90A(c);break;case'90C':h=l90C(c);break;case'90D':h=l90D(c);break;case'90J':h=l90J(c);break;case'90K':h=l90K(c);break;case'90L':h=l90L(c);break;case'90P':h=l90P(c);break;case'92':h=l92(c);break;case'90E':h=companyGeneric(c,'90(E)','DECLARATION');break;case'90F':h=companyGeneric(c,'90(F)','MEMORANDUM OF ENTRY');break;case'90G':h=companyGeneric(c,'90(G)','SUPPLEMENTAL MEMORANDUM OF ENTRY');break;case'90H':h=companyGeneric(c,'90(H)','LETTER OF CONFIRMATION OF CREATION / EXTENSION OF MORTGAGE');break}h=boldUserDataInDocument(h,c);$('paper').innerHTML=h;currentDoc={title:code,html:h};$('previewModal').style.display='block'}
+function closePreview(){$('previewModal').style.display='none'}
+function downloadWord(){let body=$('paper').innerHTML,doc=`<html><head><meta charset="utf-8"><style>body{font-family:Arial,Helvetica,sans-serif;font-size:11pt;line-height:1.15;color:#000}p,li{font-family:Arial,Helvetica,sans-serif;font-size:11pt;line-height:1.15;text-align:justify;margin-top:0;margin-bottom:6pt}h1,h2,h3,h4{font-family:Arial,Helvetica,sans-serif;font-size:12pt;line-height:1.15;font-weight:700;text-align:center;margin:6pt 0}table{width:100%;border-collapse:collapse;font-family:Arial,Helvetica,sans-serif;font-size:11pt;line-height:1.15}th,td{border:1px solid #000;padding:6pt;font-family:Arial,Helvetica,sans-serif;font-size:11pt;line-height:1.15;vertical-align:top}.noborder td{border:0}.photoCell{width:35mm!important;min-width:35mm!important;max-width:35mm!important;height:45mm!important;min-height:45mm!important;padding:0!important;vertical-align:middle!important}.staffPhotoCell{height:auto!important;min-height:0!important;width:35mm!important;min-width:35mm!important;max-width:35mm!important;padding:6pt!important}.photoCol{width:35mm!important;min-width:35mm!important;max-width:35mm!important}.signatureCol{width:38%!important;min-width:38%!important}.sigbox,.signatureCell{min-height:65px;height:65px!important;min-width:190px;vertical-align:middle!important}.facilityWords{font-size:10.5pt}.officerExec{margin-top:30pt;display:flex;justify-content:space-between;gap:60pt}.officerExec>div{width:45%;text-align:center}.annexBoundary{margin-top:10pt!important;margin-bottom:18pt!important;page-break-inside:avoid}.legalNoteAfterExecution{clear:both;margin-top:36pt!important;padding-top:4pt;page-break-inside:avoid}.title{font-family:Arial,Helvetica,sans-serif;font-size:12pt;font-weight:700;text-align:center;line-height:1.15;margin:6pt 0}.schedule{font-weight:700;text-align:center;margin-top:24pt;margin-bottom:12pt;font-size:12pt}.scheduleDetails{margin-top:10pt;margin-bottom:12pt}.pagebreak{page-break-before:always}.sig{margin-top:35pt;display:flex;justify-content:space-between;font-family:Arial,Helvetica,sans-serif;font-size:11pt;line-height:1.15}</style></head><body>${body}</body></html>`,blob=new Blob([doc],{type:'application/msword'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(currentDoc.title||'Mortgage_Document')+'.doc';a.click();URL.revokeObjectURL(a.href)}
+function runInternalSelfTest(){const r={};try{$('borrowers').innerHTML='';addBorrower({name:'Mr. Joint Owner One',relation:'son of Shri A',role:'Borrower'});addBorrower({name:'Mrs. Joint Owner Two',relation:'wife of Shri B',role:'Co-borrower'});$('owners').innerHTML='';addOwner({name:'Mr. Joint Owner One',relation:'son of Shri A',role:'Borrower'});addOwner({name:'Mrs. Joint Owner Two',relation:'wife of Shri B',role:'Co-borrower'});$('facilities').innerHTML='';addFacility({name:'Home Loan',account:'TEST001',amount:'1000000'});$('legalHeirs').innerHTML='';addLegalHeir({name:'Test Heir',relation:'Son'});$('borrowerName').value='Mr. Joint Owner One & Mrs. Joint Owner Two';$('propertyType').value='joint';$('jointMode').value='all';syncDepositors();$('mortgageEvent').value='original';let c=getCase(),a=l90A(c),d=l90C(c),u=undertakingOriginal(c),j=l90J(c),ac=annexC(c);r.joint90A=a.includes('Mr. Joint Owner One')&&a.includes('Mrs. Joint Owner Two')&&/MORTGAGORS/.test(a);r.joint90C=d.includes('Mr. Joint Owner One')&&d.includes('Mrs. Joint Owner Two')&&/We say that we are/.test(d)&&/We hereby agree/.test(d)&&/13\)/.test(d);r.noSingularOnly=!/I, Mr\. Joint Owner One/.test(d);r.undertaking=u.includes('Mr. Joint Owner One')&&u.includes('Mrs. Joint Owner Two')&&/We have executed/.test(u);r.annexC=ac.includes('ANNEXURE – C')&&ac.includes('Mr. Joint Owner One')&&ac.includes('Mrs. Joint Owner Two');r.joint90J=j.includes('Mr. Joint Owner One')&&j.includes('Mrs. Joint Owner Two');r.amountWords=/Rupees Fifteen Lakh Ninety Thousand Four Hundred Fifty Eight Only/.test(buildFacilityBreakdown([{facilityType:'Home Loan',amount:1590458}]).text)&&/Home Loan of Rs\. 15,90,458\/-/.test(buildFacilityBreakdown([{facilityType:'Home Loan',amount:1590458}]).text);r.multiFacility=/ & /.test(buildFacilityBreakdown([{facilityType:'Home Loan',amount:1590458},{facilityName:'Baroda Flexi Loan Over Home Security',amount:2600000}]).text)&&/aggregating to Rs\. 41,90,458\/-/.test(buildFacilityBreakdown([{facilityType:'Home Loan',amount:1590458},{facilityName:'Baroda Flexi Loan Over Home Security',amount:2600000}]).text);r.borrowerSeparation=borrowerNameList(c)==='Mr. Joint Owner One & Mrs. Joint Owner Two';r.signatureWidth=/signatureCol/.test(annexA(c));r.officerNames=annexA(c).includes(c.settings.branchManager)&&annexA(c).includes(c.settings.processingOfficer);r.l90AOfficerSentence=l90A(c).includes(c.settings.branchManager+', Branch Manager & '+c.settings.processingOfficer+', Credit Officer')&&!l90A(c).includes('Shri '+c.settings.branchManager+', Manager of BOB');r.affidavit=affidavit(c).includes('Test Heir')&&affidavit(c).includes('16.')&&affidavit(c).includes('BEFORE PUBLIC NOTARY');r.PASS=Object.values(r).every(Boolean)}catch(e){r.PASS=false;r.error=String(e.stack||e)}return r}
+
+window.addEventListener('DOMContentLoaded',async()=>{addBorrower();addOwner();addFacility();addLegalHeir();addExtFacility();let s={};try{s=JSON.parse(safeLSGet(SETTINGS_STORE)||'{}')}catch(e){}try{let m=await idbGet('meta','settings');if(m?.value)s=m.value}catch(e){}Object.entries(s).forEach(([k,v])=>{$(k)&&($(k).value=v||'')});['propertyType','depositor'].forEach(id=>$(id).addEventListener('change',refreshChecklist));refreshChecklist();try{let count=Object.keys(localCases()).length;let db=await idbAll('cases');count=Math.max(count,db.length);setStorageStatus(count?count+' saved case(s) available.':'No saved cases yet.')}catch(e){setStorageStatus('Local storage ready.',true)}})
+</script></body></html>
